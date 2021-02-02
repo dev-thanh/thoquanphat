@@ -1,0 +1,256 @@
+
+// ========================================responsive site
+// =====-----------------mobile1
+/*Smart phone nhỏ*/
+@media screen and (min-width: 240px){
+    
+}
+/*Iphone(480 x 640)*/
+@media screen and (min-width: 320px){
+    
+}
+/*Tablet nhỏ(480 x 640)*/
+@media screen and (min-width: 480px){
+    
+}
+/*Ipad dọc(768 x 1024)*/
+@media screen and (min-width: 768px){
+    
+}
+/*Ipad ngang(1024 x 768)*/
+@media screen and (min-width: 1024px){
+  
+}
+
+
+@media (min-width: 1920px) {
+    html {
+        font-size: 16px;
+    }
+}
+@media (min-width: 1680px) and (max-width: 1919px) {
+    html {
+        font-size: 15px;
+    }
+}
+@media (min-width: 1440px) and (max-width: 1679px) {
+    html {
+        font-size: 15px;
+    }
+}
+@media (min-width: 1366px) and (max-width: 1439px) {
+    html {
+        font-size: 14px;
+    }
+}
+@media (min-width: 1200px) and (max-width: 1365px) {
+    html {
+        font-size: 13px;
+    }
+}
+@media (min-width: 1025px) and (max-width: 1199px) {
+    html {
+        font-size: 12px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1024px) {
+    html {
+        font-size: 12px;
+    }
+    .row {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+    .row [class*="col-"] {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .row {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+    .row [class*="col-"] {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .slider_banner--home .slide_banner .text_slider--main a.btn {
+        right: 2rem;
+        bottom: 1rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    html {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 767px) {
+    .sanpham_banchay {
+        .row {
+            .col-xl-3 {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+    .title_section .h2_title {
+        width: 100%;
+    }
+    .y-kien-kh {
+        .row {
+            .col-xl-6:nth-child(1) {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+    .news .content_section .row .col-xl-4 {
+        margin-bottom: 1rem;
+    }
+    // css page san pham
+    .box_sp--moi {
+        display: none;
+    }
+    .chi-tiet-sp .content_ctsp {
+        width: 100%;
+        margin-top: 2rem;
+    }
+    .content_page--story .box_about .right {
+        margin-top: 2rem;
+    }
+    .content_page--story .box_giatri .row .col-xl-4 {
+        margin-bottom: 1rem;
+    }
+    .content_page--story .tamnhin, .content_page--story .sumenh {
+        margin-bottom: 1rem;
+        .left {
+            width: 100%;
+            transform: translate(0);
+        }
+    }
+    .content_page--story .tamnhin, .content_page--story .sumenh {
+        flex-wrap: wrap;
+        .right {
+            width: 100%;
+            position: static;
+            transform: translate(0);
+        }
+    }
+    .content_page--blog .sidebar_blog .list_item--blog-sb {
+        display: flex;
+        flex-wrap: wrap;
+        .item_blog--sb {
+            width: 48%;
+            &:nth-child(2n) {
+                margin-left: auto;
+            }
+        }
+    }
+    .content_page--faq .form_dagky .form_lienhe {
+        width: 100%;
+    }
+    .content_page--daily .box_daily .daily .box {
+        width: 100%;
+    }
+    .content_page--lienhe .form_dagky .form_lienhe {
+        width: 100%;
+    }
+    .content_page--lienhe .row .col-xl-5 {
+        margin-bottom: 2rem;
+    }
+    .page-404 .box_content {
+        .h1-title {
+            font-size: 10rem;
+        }
+        .h2-title {
+            font-size: 1.75rem;
+        }
+        .h3-title {
+            font-size: 1.25rem;
+        }
+    }
+    // css page gio hang
+    .content_page--giohang .table-responsive table tr td:nth-child(2) {
+        min-width: 200px;
+    }
+    .content_page--giohang .table-responsive table tr td.sp .d-flex .img-sp {
+        width: 60px;
+        height: 60px;
+        padding-top: 60px;
+    }
+    .content_page--giohang .table-responsive table tr td.soluong {
+        min-width: 150px;
+    }
+    .content_page--giohang .box_info--thanhtoan .left {
+        margin-bottom: 3rem;
+    }
+    .content_page--giohang .box_info--thanhtoan .right .form-check label {
+        font-size: 1,5rem;
+        margin-left: 0.3rem;
+    }
+}
+
+
+@media (min-width: 601px) and (max-width: 767px) {
+    html {
+        font-size: 11px;
+    }
+}
+@media (min-width: 475px) and (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+}
+@media (min-width: 415px) and (max-width: 474px) {
+    html {
+        font-size: 10px;
+    }
+}
+@media (min-width: 320px) and (max-width: 414px) {
+    html {
+        font-size: 10px;
+    }
+}
+
+
+// css input iphone
+/* disable auto-zoom on iphone input field focus */
+
+/*** Styles added to fix the issue with zoom in on iphone ***/
+/*input:focus, textarea:focus {
+    font-size: 16px !important;
+}*/
+/* iPhone < 5: */
+@media screen and (device-aspect-ratio: 2/3) {
+    .react-select-containers, select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+/* iPhone 5, 5C, 5S, iPod Touch 5g */
+@media screen and (device-aspect-ratio: 40/71) {
+    .react-select-containers, select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+/* iPhone 6, iPhone 6s, iPhone 7 portrait/landscape */
+@media screen and (device-aspect-ratio: 375/667) {
+    .react-select-containers, select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+/* iPhone 6 Plus, iPhone 6s Plus, iPhone 7 Plus portrait/landscape */
+@media screen and (device-aspect-ratio: 9/16) {
+    .react-select-containers, select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}

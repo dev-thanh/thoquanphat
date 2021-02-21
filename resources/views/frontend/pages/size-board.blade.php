@@ -18895,6 +18895,6 @@
 		    });
 		</script>
 
-		<script type="text/javascript" src="http://wedo.com.vn/pagespeed_static/js_defer.I4cHjq6EEP.js"></script>
+		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/js_defer.I4cHjq6EEP.js"></script>
 	</body>
 </html>

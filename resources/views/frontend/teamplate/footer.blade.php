@@ -1,116 +1,104 @@
-<style type="text/css" media="screen">
-    #footer-site {
-        background: url({{$site_info->background_footer}});
-        background-size: 100% 100%;
-    }
-</style>
-<footer id="footer-site">
-    <div class="footer">
-        <div class="container">
-            <div class="menu_ft">
-                @if (!empty($menuHeader))
-                <ul class="ul-b d-flex flex-wrap">
-                    @foreach ($menuFooter as $item)
-                        @if ($item->parent_id == null)
-                        <li><a href="{{url('/').$item->url}}">{{$item->title}}</a></li>
+<footer id="footer">
+    <div class="container">
+        <div class="footer__group">
+            <div class="footer__item">
+                <div class="logo">
+                    <a href="index.html" class="logo__link">
+                        <img src="{{ url('/').$site_info->logo_footer }}" alt="icon__logo__footer.png" />
+                    </a>
+                </div>
+                <div class="footer__title">Giới thiệu</div>
+                <ul class="footer__body">
+                    @if (count($policy) > 0)
+                        @foreach ($policy as $item)
+                        @if($item->type==1)
+                        <li>
+                            <a href="{{route('home.policy',['slug' => $item->slug])}}">
+                                <span class="icon">
+                                    <img src="{{url('/')}}/{{ @$item->image }}" alt="{{ @$item->name }}" />
+                                </span>
+                                <span class="footer__text"> {{ @$item->name }} </span>
+                            </a>
+                        </li>
                         @endif
-                    @endforeach
+                        @endforeach
+                    @endif
+                    
                 </ul>
-                @endif
             </div>
-            <div class="main_ft">
-                <div class="logo_ft">
-                    <a href="{{route('home.index')}}"><img src="{{ url('/').@$site_info->logo_footer }}" alt="Logo"></a>
-                </div>
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="left_ft">
-                            <div class="box_ft">
-                                <h2 class="h2_title--ft">{{ @$site_info->name_company }}</h2>
-                                <div class="content_ft">
-                                    <ul class="ul-b">
-                                        @foreach (@$site_info->address->list as $item)
-                                        <li>
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <span>
-                                                {{ $item->title }}
-                                            </span>
-                                        </li>
-                                        @endforeach
-                                        <li>
-                                            <i class="fas fa-phone"></i> <span>{{ @$site_info->phone }}</span>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-envelope"></i><span>{{ @$site_info->email }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
+            <div class="footer__item">
+                <div class="footer__title">NHẬN TIN KHUYẾN MÃI</div>
+                <form class="footer__form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="">Nhập địa chỉ email</label>
+                                <input type="text" class="form-control control__input" />
+                                <!-- <p class="text__error">
+                                    Thông báo lỗi
+                                </p> -->
                             </div>
                         </div>
                     </div>
+                    <button class="btn btn__save">Gửi</button>
+                </form>
+                <div class="form__contact">
+                    <div class="footer__title">Liên hệ</div>
+                    @if (count($policy) > 0)
+                        @foreach ($policy as $item)
+                            @if($item->type==2)
 
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="right_ft d-flex">
-                            <div class="box_ft">
-                                <h2 class="h2_title--ft">Chính sách</h2>
-                                <div class="content_ft">
-                                    <ul class="ul-b list_chinhsach">
-                                        @if (count($policy) > 0)
-
-                                            @foreach ($policy as $item)
-                                                <li><a href="{{route('home.policy',['slug' => $item->slug])}}" title="{{ @$item->name }}"><i class="fas fa-angle-right"></i>{{ @$item->name }}</a></li>
-                                            @endforeach
-
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="contact__group">
+                                <h3 class="contact__group-title">{{$item->name}}</h3>
+                                @foreach(json_decode(@$item->content)->ftct->content as $val)
+                                <p class="text-addr">
+                                    <span class="icon">
+                                        <img src="{{url('/')}}/{{$val->image}}" alt="{{$val->title}}" />
+                                    </span>
+                                    {{$val->title}}
+                                </p>
+                                @endforeach
                             </div>
-                            <div class="box_ft">
-                                <h2 class="h2_title--ft">Hotline</h2>
-                                <div class="content_ft">
-                                    <div class="tuvan">
-                                        @if(!empty(@$site_info->order_time))
-                                        <div class="tu_van">
-                                            <img src="{{url('/').'/uploads/icon-cmt.png'}}">
-                                            <div class="text">
-                                                <span>Tư vấn đặt hàng {{@$site_info->order_time}}</span>
-                                                <span class="number_phone">{{ @$site_info->hotline }}</span>
-                                            </div>
-                                        </div>
-                                        @endif
-                                        <div class="bct">
-                                            <img src="{{url('/').@$site_info->logo_bct}}" alt="Logo BCT">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            @endif
+                        @endforeach
+                    @endif
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="copy_right">
-        <div class="container">
-            <div class="copyright d-flex">
-                <div class="left">
-                    © GCO GROUP 2019. All rights reserved
+            <div class="footer__item">
+                <div class="facebook">
+                    <div class="fb-page" data-href="{!! @$site_info->link_page_facebook !!}" data-tabs="" data-width=""
+                        data-height="100%" data-small-header="false" data-adapt-container-width="true"
+                        data-hide-cover="false" data-show-facepile="true" data-lazy="true">
+                        <blockquote cite="{!! @$site_info->link_page_facebook !!}" class="fb-xfbml-parse-ignore">
+                            <a href="{!! @$site_info->link_page_facebook !!}">Facebook</a>
+                        </blockquote>
+                    </div>
                 </div>
-                <div class="right">
-                    <ul class="ul-b list_social">
-                        @if (!empty(@$site_info->social))
+                <div class="youtube">
+                    <div class="play">
+                        
+                        <div class="frame">
+                            {!! @$site_info->iframe_video !!}
 
-                            @foreach ($site_info->social as $item)
-                                <li>
-                                    <a href="{{ $item->link }}" target="_blank" title="{{ $item->name }}">
-                                        <img src="{{ url('/').$item->icon }}" alt="icon__facbook.png">
-                                    </a>
-                                </li>
-                            @endforeach
-                        @endif
-                    </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </footer>
+<button class="back-top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+<div id="tool__society">
+    <div class="tool__item">
+        @if (!empty(@$site_info->social))
+            @foreach ($site_info->social as $item)
+            <a href="{{ $item->link }}" class="tool__icon">
+                <img src="{{ url('/').$item->icon }}" alt="{{ $item->name }}" />
+            </a>
+            @endforeach
+        @endif
+    </div>
+</div>

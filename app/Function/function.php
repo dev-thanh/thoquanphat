@@ -79,7 +79,7 @@ function renderLinkAddPostType()
     }
 }
 
-function listCate($data, $parent_id = 0, $str = '',$type='product')
+function listCate($data, $parent_id = 0, $str = '',$type)
 {
     foreach ($data as $value) {
         $id   = $value->id;
@@ -94,17 +94,41 @@ function listCate($data, $parent_id = 0, $str = '',$type='product')
             echo '<tr class="odd">';
             echo '<td><input type="checkbox" name="chkItem[]" value="' . $id . '"></td>';
             // echo "<td><img src='$value->image' class='img-responsive imglist'></td>";
-            if($type=='gift'){
+            if($type=='category_quotes'){
                 echo '<td>
                     <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
-                    <a href="' . asset('danh-muc-san-pham-gift/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('danh-muc-san-pham-gift/' . $value->slug) . ' </a> 
+                    <a href="' . asset('bao-gia-va-quy-trinh/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('bao-gia-va-quy-trinh/' . $value->slug) . ' </a> 
                 </td>';
-            }else{
-                echo '<td>
-                            <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
-                            <a href="' . asset('danh-muc-san-pham/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('danh-muc-san-pham/' . $value->slug) . ' </a> 
-                        </td>';
             }
+
+            if($type=='category_services'){
+                echo '<td>
+                    <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
+                    <a href="' . asset('dich-vu/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('dich-vu/' . $value->slug) . ' </a> 
+                </td>';
+            }
+
+            if($type=='category_utilities'){
+                echo '<td>
+                    <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
+                    <a href="' . asset('tien-ich/danh-muc/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('tien-ich/danh-muc/' . $value->slug) . ' </a> 
+                </td>';
+            }
+
+            if($type=='category_projects'){
+                echo '<td>
+                    <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
+                    <a href="' . asset('du-an-hoan-thanh/danh-muc/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('du-an-hoan-thanh/danh-muc/' . $value->slug) . ' </a> 
+                </td>';
+            }
+
+            if($type=='category_beautiful_house'){
+                echo '<td>
+                    <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
+                    <a href="' . asset('mau-nha-dep/danh-muc/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('mau-nha-dep/danh-muc/' . $value->slug) . ' </a> 
+                </td>';
+            }
+
             echo '<td><a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa"> ' . count($value->get_child_cate()) ?: '_' . ' </a>
                         </td>';
             echo '<td>'. $value->order .'</td>';
@@ -115,7 +139,7 @@ function listCate($data, $parent_id = 0, $str = '',$type='product')
                             </td>';
             echo '</tr>';
 
-            listCate($data, $id, $str . '---| ');
+            listCate($data, $id, $str . '---| ',$type);
         }
     }
 }
@@ -269,6 +293,21 @@ function getOptions($key = null, $field = null)
                 'gia-tu-thap-den-cao' => 'price',
             ]
         ];
+    }
+
+    function getYoutubeEmbedUrl($url)
+    {
+         $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
+         $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
+         
+        if (preg_match($longUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+
+        if (preg_match($shortUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+        return $youtube_id ;
     }
 
 

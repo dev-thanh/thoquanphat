@@ -97,6 +97,8 @@ class CategoryController extends Controller
 
         $input = $request->all();
 
+        $input['image'] = $request->image_category;
+
         $input['type'] = $type;
 
         $data = Categories::create($input);
@@ -150,6 +152,8 @@ class CategoryController extends Controller
         }
 
         $input = $request->all();
+
+        $input['image'] = $request->image_category;
 
         $cate = Categories::findOrFail($id)->update($input);
 

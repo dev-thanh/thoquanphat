@@ -1,6 +1,17 @@
-<?php $text = request()->type=='gift' ? 'gift' : ''; ?>
+<?php $text = '';
+	$type = request()->type;
+	switch ($type) {
+		case 'category_services':
+			$text = 'dịch vụ';
+			break;
+		
+		default:
+			// code...
+			break;
+	}
+ ?>
 @extends('backend.layouts.app')
-@section('controller', 'Danh mục sản phẩm '.$text )
+@section('controller', 'Danh mục '.$text )
 @section('controller_route', route('category.index',['type'=>request()->type]))
 @section('action', renderAction(@$module['action']))
 @section('content')
@@ -40,6 +51,10 @@
 										   <?php menuMulti( $categories , 0 , '' ,   old( 'parent_id', @$data->parent_id )); ?>
 									</select>
 								</div>
+                                <div class="form-group">
+                                    <label for="">Mô tả ngắn danh mục</label>
+                                    <textarea class="form-control" name="content">{!! old('content', @$data->content) !!}</textarea>
+                                </div>
 								<div class="form-group">
 									<?php if(isUpdate(@$module['action'])){
 										$order = old('order', @$data->order);
@@ -47,7 +62,25 @@
 									<label for="">Số thứ tự hiển thị</label>
 									<input type="number" name="order" value="{{ @$order }}" class="form-control">
 								</div>
-								<input type="hidden" name="type" value="{{ request()->type=='gift' ? 'gift' : 'product_category' }}">
+								@if($type == 'category_services')
+								<div class="form-group">
+									<label for="">Hình ảnh đại diện danh mục</label>
+									<div class="image">
+			                            <div class="image__thumbnail">
+			                                <img src="{{ !empty(@$data->image) ? @$data->image : __IMAGE_DEFAULT__ }}"
+			                                     data-init="{{ __IMAGE_DEFAULT__ }}">
+			                                <a href="javascript:void(0)" class="image__delete" onclick="urlFileDelete(this)">
+			                                    <i class="fa fa-times"></i></a>
+			                                <input type="hidden" value="{{ old('image_category', @$data->image) }}" name="image_category"/>
+			                                <div class="image__button" onclick="fileSelect(this)">
+			                                	<i class="fa fa-upload"></i>
+			                                    Upload
+			                                </div>
+			                            </div>
+			                        </div>
+		                        </div>
+		                        @endif
+								<input type="hidden" name="type" value="{{ request()->type }}">
 		                    </div>
 		                    <div class="tab-pane" id="setting">
 		                    	<div class="row">

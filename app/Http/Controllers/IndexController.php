@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Image;
 use JsValidator;
 use Validator;
+use DOMDocument;
+use App\Models\Services;
+use App\Models\ServicesCategory;
+use App\Models\Quotes;
+use App\Models\QuotesCategory;
+use App\Models\Projects;
+use App\Models\ProjectsCategory;
+use App\Models\BeautifulHouse;
+use App\Models\CategoryBeautifulHouse;
+use App\Models\Utilities;
+use App\Models\UtilitiesCategory;
+use App\Models\Advisory;
+
+
 use App\Models\Posts;
 use App\Models\Customer;
 use App\Models\Products;
@@ -51,13 +65,11 @@ class IndexController extends Controller
 
             $menuHeader = Menu::where('id_group', 1)->orderBy('position')->get();
             $menuFooter = Menu::where('id_group', 3)->orderBy('position')->get();
-            $menuMobile = Menu::where('id_group', 4)->orderBy('position')->get();
-            $menuProducts = Menu::where('id_group', 2)->orderBy('position')->get();
+            $slider = Image::where('status', 1)->where('type', 'slider')->get();
             $menuCategory = Categories::where('type', 'product_category')->orderBy('order')->get();
-            $menuCategorygift = Categories::where('type', 'gift')->orderBy('order')->get();
-            $policy = Policy::where('status', 1)->orderBy('position')->get();
+            $policy = Policy::where('status', 1)->orderBy('stt','ASC')->get();
 
-            view()->share(compact('site_info', 'menuHeader', 'menuFooter','menuMobile', 'menuCategory', 'menuProducts','menuCategorygift','policy'));
+            view()->share(compact('site_info', 'menuHeader','slider', 'menuFooter','menuCategory', 'policy'));
         }
     }
 
@@ -118,19 +130,403 @@ class IndexController extends Controller
 
         $category = Categories::where('type', 'product_category')->get();
 
-        $category_gift = Categories::where('type', 'gift')->get();
-
-        $products_selling = Products::where([
+        $services = Services::where([
             'status' => 1,
-            'is_selling' => 1
-        ])->orderBy('created_at','DESC')->get();
+            'show_home' =>1
+        ])->orderBy('created_at','DESC')->take(5)->get();
 
-        $products = Products::where('status', 1)->orderBy('created_at','DESC')->take(6)->get();
+        $cate_projects = Categories::where('type','category_projects')->get();
 
-        $blogs = Posts::where('status', 1)->orderBy('created_at','DESC')->take(6)->get();
+        $blogs = Posts::where('status', 1)->orderBy('created_at','DESC')->take(5)->get();
 
-    	return view('frontend.pages.home', compact('contentHome','category_gift','products_selling','products','blogs'));
+    	return view('frontend.pages.home', compact('contentHome','services','cate_projects','blogs'));
     }
+
+    public function getListAbout(){
+
+        $dataSeo = Pages::where('type', 'aboutus')->first();
+
+        $this->createSeo($dataSeo);
+
+        return view('frontend.pages.about', compact('dataSeo'));
+    }
+
+    public function getServices(){
+
+        $dataSeo = Pages::where('type', 'services')->first();
+
+        $this->createSeo($dataSeo);
+
+        $cate_parent = Categories::where([
+            'type' => 'category_services',
+            'parent_id' => 0,
+        ])->get();
+
+        return view('frontend.pages.get-listcategory-services',compact('cate_parent','dataSeo'));
+
+    }
+
+    public function getCategoryServices($slug){
+
+        $cate = Categories::where([
+            'slug' => $slug,
+            'type' => 'category_services'
+        ])->first();
+
+        $cate_child = Categories::where('parent_id',$cate->id)->get();
+
+        if(count($cate_child) > 0){
+            return view('frontend.pages.get-childcategory-services',compact('cate','cate_child'));
+        }
+
+        $services = $cate->Services;
+
+        return view('frontend.pages.page-service-townhouse',compact('cate','services'));
+
+    }
+
+    public function servicesDetail($slug){
+
+        $data = Services::where('slug',$slug)->first();
+
+        $this->createSeoPost($data);
+
+        $list_category = $data->category->pluck('id')->toArray();
+
+        $list_services_related   = ServicesCategory::whereIn('id_category', $list_category)->get()->pluck('id_services')->toArray();
+
+        $services_same_category  = Services::where('id', '!=', $data->id)->where('status', 1)
+                                ->whereIn('id', $list_services_related)->orderBy('created_at', 'DESC')->get();
+
+        return view('frontend.pages.services-detail',compact('data','services_same_category'));
+
+    }
+
+    public function getQuotes(){
+
+        $data = Quotes::where('status',1)->get();
+
+        return view('frontend.pages.get-quotes',compact('data'));
+
+    }
+
+    public function getChildQuotes($slug){
+
+        $cate = Categories::where('slug',$slug)->first();
+
+        if($cate){
+
+            $data = $cate->Quotes;
+
+            return view('frontend.pages.get-quotes',compact('cate','data'));
+
+        }
+
+        $data = Quotes::where('slug',$slug)->firstOrFail();
+
+        if($data){
+
+            $this->createSeoPost($data);
+
+            $list_category = $data->category->pluck('id')->toArray();
+
+            $list_quotes_related   = QuotesCategory::whereIn('id_category', $list_category)->get()->pluck('id_quotes')->toArray();
+
+            $quotes_same_category  = Quotes::where('id', '!=', $data->id)->where('status', 1)
+                                    ->whereIn('id', $list_quotes_related)->orderBy('created_at', 'DESC')->get();
+
+            return view('frontend.pages.quotes-detail',compact('data','quotes_same_category'));
+
+        }
+    }
+
+    public function thuocLoBan(){
+
+        $dataSeo = Pages::where('type', 'size_board')->first();
+
+        return view('frontend.pages.size-board',compact('dataSeo'));
+
+    }
+
+    public function curl_get_file_contents($URL) 
+    {
+            $c = curl_init();
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($c, CURLOPT_URL, $URL);
+            $contents = curl_exec($c);
+            $err  = curl_getinfo($c,CURLINFO_HTTP_CODE);
+            curl_close($c);
+            if ($contents) return $contents;
+            else return FALSE;
+    }
+
+    public function phongThuy(Request $request){
+
+        $dataSeo = Pages::where('type', 'size_board')->first();
+
+        $this->createSeo($dataSeo);
+
+        if(!$request->has('born') && !$request->has('huongnha') && !$request->has('male')){
+            $html = '';
+        }else{
+
+            $url = 'https://wonder.vn/xem-phong-thuy/?born=' . $request->namsinh . '&male=' . $request->male . '&huongnha=' . $request->huongnha . '&submitpt=OK';
+
+            $f = $this->curl_get_file_contents($url);
+            $dom = new DOMDocument();
+            @$dom->loadHTML($f);
+            $data = $dom->getElementById("pt-content");
+            $div=$dom->getElementById('pt-frmpt');
+            if( $div && $div->nodeType==XML_ELEMENT_NODE ){
+                $div->parentNode->removeChild( $div );
+            }
+            $html = $dom->saveHTML($data);
+
+            if(str_contains($html, 'https://cdn.wonder.vn/wp-content/uploads/2016/08/nguhanh.jpg')){
+
+               $html = str_replace("https://cdn.wonder.vn/wp-content/uploads/2016/08/nguhanh.jpg",url('').'/public/frontend/images/ngu-hang-tuong-khac.png',$html);
+            }
+        }
+
+        //dd($html);
+
+        return view('frontend.pages.phong-thuy',compact('dataSeo','html'));
+
+    }
+
+    public function projectCompleted(){
+
+        $dataSeo = Pages::where('type', 'category_projects')->first();
+
+        $this->createSeo($dataSeo);
+
+        $data = Projects::where('status',1)->orderBy('created_at','DESC')->get();
+
+        return view('frontend.pages.project-completed',compact('dataSeo','data'));
+
+    }
+
+    public function categoryProjectCompleted($slug){
+
+        $dataSeo = Pages::where('type', 'category_projects')->first();
+
+        $this->createSeo($dataSeo);
+
+        $cate = Categories::where([
+            'type' => 'category_projects',
+            'slug' => $slug
+        ])->first();
+
+        $data = $cate->Projects;
+
+        return view('frontend.pages.project-completed',compact('dataSeo','data','cate'));
+
+    }
+
+    public function projectDetail($slug){
+
+        $data = Projects::where('slug',$slug)->first();
+
+        $this->createSeoPost($data);
+
+        $list_category = $data->category->pluck('id')->toArray();
+
+        $list_projects_related   = ProjectsCategory::whereIn('id_category', $list_category)->get()->pluck('id_projects')->toArray();
+
+        $projects_same_category  = Projects::where('id', '!=', $data->id)->where('status', 1)
+                                ->whereIn('id', $list_projects_related)->orderBy('created_at', 'DESC')->get();
+
+        return view('frontend.pages.project-detail',compact('data','projects_same_category'));
+
+    }
+
+    public function beautifulhome(){
+
+        $dataSeo = Pages::where('type', 'category_beautiful_house')->first();
+
+        $this->createSeo($dataSeo);
+
+        $data = BeautifulHouse::where('status',1)->orderBy('created_at','DESC')->get();
+
+        return view('frontend.pages.beautiful-home',compact('dataSeo','data'));
+
+    }
+
+    public function categoryBeautifulHome($slug){
+
+        $dataSeo = Pages::where('type', 'category_beautiful_house')->first();
+
+        $this->createSeo($dataSeo);
+
+        $cate = Categories::where([
+            'type' => 'category_beautiful_house',
+            'slug' => $slug
+        ])->first();
+
+        $data = $cate->BeautifulHouse;
+
+        return view('frontend.pages.beautiful-home',compact('dataSeo','data','cate'));
+
+    }
+
+    public function beautifulHomeDetail($slug){
+
+        $data = BeautifulHouse::where('slug',$slug)->first();
+
+        $this->createSeoPost($data);
+
+        $list_category = $data->category->pluck('id')->toArray();
+
+        $list_beautiful_house_related   = CategoryBeautifulHouse::whereIn('id_category', $list_category)->get()->pluck('id_beautiful_house')->toArray();
+
+        $beautiful_house_same_category  = BeautifulHouse::where('id', '!=', $data->id)->where('status', 1)
+                                ->whereIn('id', $list_beautiful_house_related)->orderBy('created_at', 'DESC')->get();
+
+        return view('frontend.pages.beautiful-house-detail',compact('data','beautiful_house_same_category'));
+
+    }
+
+    public function Utilities(){
+
+        $dataSeo = Pages::where('type', 'category_utilities')->first();
+
+        $this->createSeo($dataSeo);
+
+        $data = Utilities::where('status',1)->orderBy('created_at','DESC')->get();
+
+        return view('frontend.pages.utilities',compact('dataSeo','data'));
+
+    }
+
+    public function categoryUtilities($slug){
+
+        $dataSeo = Pages::where('type', 'category_utilities')->first();
+
+        $this->createSeo($dataSeo);
+
+        $cate = Categories::where([
+            'type' => 'category_utilities',
+            'slug' => $slug
+        ])->first();
+
+        $data = $cate->Utilities;
+
+        return view('frontend.pages.utilities',compact('dataSeo','data','cate'));
+
+    }
+
+    public function utilitiesDetail($slug){
+
+        $data = Utilities::where('slug',$slug)->first();
+
+        $this->createSeoPost($data);
+
+        $list_category = $data->category->pluck('id')->toArray();
+
+        $list_utilities_related   = UtilitiesCategory::whereIn('id_category', $list_category)->get()->pluck('id_utilities')->toArray();
+
+        $utilities_same_category  = Utilities::where('id', '!=', $data->id)->where('status', 1)
+                                ->whereIn('id', $list_utilities_related)->orderBy('created_at', 'DESC')->get();
+
+        return view('frontend.pages.utilities-detail',compact('data','utilities_same_category'));
+
+    }
+
+    public function getContact(){
+
+        $dataSeo = Pages::where('type', 'contact')->first();
+
+        return view('frontend.pages.contact',compact('dataSeo'));
+
+    }
+
+    public function signupConsultation(){
+
+        $dataSeo = Pages::where('type', 'advisory')->first();
+
+        return view('frontend.pages.advisory',compact('dataSeo'));
+
+    }
+
+    public function postsignupConsultation(Request $request){
+
+        $result = [];
+        if ($request->name == '' || $request->name == null) {
+            $result['message_name'] = 'Bạn chưa nhập họ tên';
+        }
+        
+        if ($request->phone == '' || $request->phone == null) {
+            $result['message_phone'] = 'Bạn chưa nhập số điện thoại';
+        } else {
+            if (!is_numeric($request->phone) || strlen($request->phone) != 10) {
+                $result['message_phone'] = 'Vui lòng nhập đúng định dạng số điện thoại. Ví dụ: 0989888456';
+            }
+        }
+
+        if ($request->building_site == '' || $request->building_site == null) {
+            $result['building_site'] = 'Trường này không được để trống';
+        }
+
+        if ($request->advisory_content == '' || $request->advisory_content == null) {
+            $result['advisory_content'] = 'Trường này không được để trống';
+        }
+        
+        if (strlen($request->advisory_content) > 500) {
+            $result['advisory_content'] = 'Nội dung không lớn hơn 500 ký tự';
+        }
+        if($result != []){
+            return json_encode($result);
+        }
+
+        $title = 'Đăng ký tư vấn từ khách hàng';
+
+        $result['success'] = 'Gửi đăng ký tư vấn thành công, chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất. Xin cảm ơn !';
+
+        $contact = new Advisory;
+
+        $contact->name = $request->name;
+
+        $contact->phone = $request->phone;
+
+        $contact->building_site = $request->building_site;
+
+        $contact->advisory_content = $request->advisory_content;
+
+        $contact->status = 0;
+
+        $contact->save();
+
+        $content_email = [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'building_site' => $request->building_site,
+            'advisory_content' => $request->advisory_content,
+            'url' => route('advisory.edit', $contact->id),
+        ]; 
+
+        $email_admin = getOptions('general', 'email_admin');
+
+        Mail::send('frontend.mail.mail-teamplate', $content_email, function ($msg) use($email_admin,$title) {
+
+            $msg->from(config('mail.mail_from'), 'Website - Thọ Quang Phát');
+
+            $msg->to($email_admin, 'Website - Thọ Quang Phát')->subject($title);
+
+        });
+        
+        return json_encode($result);
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     public function getFaq(){
 
@@ -190,97 +586,6 @@ class IndexController extends Controller
         $this->createSeo($dataSeo);
 
         return view('frontend.pages.story',compact('dataSeo'));
-    }
-
-    public function getContact()
-    {
-        $dataSeo = Pages::where('type', 'contact')->first();
-
-        $this->createSeo($dataSeo);
-
-        return view('frontend.pages.contact', compact('dataSeo'));
-
-    }
-
-    public function postContact(Request $request)
-    {
-        $result = [];
-        if ($request->name == '' || $request->name == null) {
-            $result['message_name'] = 'Bạn chưa nhập họ tên';
-        }
-        if ($request->email == '' || $request->email == null) {
-            $result['message_email'] = 'Bạn chưa nhập email';
-        } else {
-            if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-                $result['message_email'] = 'Email phải là một địa chỉ email hợp lệ';
-            }
-        }
-        if ($request->phone == '' || $request->phone == null) {
-            $result['message_phone'] = 'Bạn chưa nhập số điện thoại';
-        } else {
-            if (!is_numeric($request->phone) || strlen($request->phone) != 10) {
-                $result['message_phone'] = 'Vui lòng nhập đúng định dạng số điện thoại. Ví dụ: 0989888456';
-            }
-        }
-        
-        if (strlen($request->content) > 500) {
-            $result['message_content'] = 'Nội dung không lớn hơn 500 ký tự';
-        }
-        if($result != []){
-            return json_encode($result);
-        }
-
-        $data = [
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-        ];
-
-        if($request->type==1){
-            $title = 'Liên hệ từ khách hàng';
-            $result['success'] = 'Gửi thông tin thành công, chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất. Xin cảm ơn !';
-        }else{
-            $title = 'Đăng ký làm đại lý';
-            $result['success'] = 'Gửi đăng ký thành công, chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất. Xin cảm ơn !';
-        }
-
-        $customer = Customer::create($data);
-
-        $contact = new Contact;
-
-        $contact->title = $title;
-
-        $contact->customer_id = $customer->id;
-
-        $contact->type = $request->type;
-
-        $contact->content = $request->content;
-
-        $contact->status = 0;
-
-        $contact->save();
-
-        $content_email = [
-            'title' => $title,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'type' => $request->type,
-            'content' => $request->content,
-            'url' => route('contact.edit', $contact->id),
-        ]; 
-
-        $email_admin = getOptions('general', 'email_admin');
-
-        Mail::send('frontend.mail.mail-teamplate', $content_email, function ($msg) use($email_admin,$title) {
-
-            $msg->from(config('mail.mail_from'), 'Website - Dumin');
-
-            $msg->to($email_admin, 'Website - Dumin')->subject($title);
-
-        });
-        
-        return json_encode($result);
     }
 
     public function getAgency(){

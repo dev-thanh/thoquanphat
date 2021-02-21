@@ -344,14 +344,12 @@
                       <td>
                         <p>Xin chào,</p>
                         <p>Đây là email tự động gửi từ website <a href="{{ url('/') }}">{{ url('/') }}</a>.</p>
-                        <p>Có khách hàng vừa gửi thông tin liên hệ cho bạn với thông tin như sau,</p>
+                        <p>Có khách hàng vừa gửi đăng ký tư vấn với thông tin như sau,</p>
                         <p><span class="with">Tên khách hàng: </span> <b>{{ @$name }}</b></p>
                         <p><span class="with">Số điện thoại: </span> <b>{{ @$phone }}</b></p>
-                        <p><span class="with">Email: </span> <b>{{ @$email }}</b></p>
-                        <p><span class="with">Nội dung: </span> <b>{{ @$content }}</b></p>
-                        @if (!empty($link_product))
-                            Liên kết sản phẩm : {{ @$link_product }}
-                        @endif
+                        <p><span class="with">Địa điểm xây dựng: </span> <b>{{ @$building_site }}</b></p>
+                        <p><span class="with">Nội dung cần tư vấn: </span> <b>{{ @$advisory_content }}</b></p>
+                        
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" 
                         class="btn btn-primary">
                         <tbody>

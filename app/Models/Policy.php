@@ -8,6 +8,6 @@ class Policy extends Model
 {
    	protected $table = 'policy';
 
-   	protected $fillable = ['name','content','slug','url','position','status'];
+   	protected $fillable = ['name','content','slug','url','position','status','image','type','stt'];
     
 }

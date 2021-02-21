@@ -22,25 +22,12 @@
 
 		 <!--link css-->
 
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-b/bootstrap.min.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-animate/animate.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-b/jquery-ui.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-icon/all.min.css">
-		
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-slide/owl.carousel.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style-animate/aos.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/style.css">
-
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/custom.css">
-		
-		<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/skins/toastr.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/tool.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/reset.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/main.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/page.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/responsive.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/toastr.min.css" />
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
@@ -274,59 +261,118 @@
 					</span>
 				</p>
 			</div>
-			<h1 class="h1_seo d-none">Trà thảo mộc DUMIN</h1>
+			<h1 class="h1_seo d-none">Thọ Quang Phát</h1>
 			@include('frontend.teamplate.header')
 				
 				@yield('main')
 
 			@include('frontend.teamplate.footer')
 
-
-		<!--Link js-->
-		<div class="back-tt">
-            <a href="#" id="back-to-top" title="Back to top" class="show"><i class="fa fa-angle-up"></i></a>
-        </div>
-
 		<!-- <script type="text/javascript" src="{{ __BASE_URL__ }}/js/jquery.min.js"></script> --> 
 
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/jquery-ui.min.js"></script>
-
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/filter-script.js"></script>
-
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/popper.min.js"></script>
-
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/bootstrap.min.js"></script>
-
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/owl.carousel.js"></script>
-
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/aos.js"></script>
+		<script src="{{ __BASE_URL__ }}/js/tool.min.js"></script>
+		<script defer src="{{ __BASE_URL__ }}/js/main.js"></script> 
 
 
 		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/toastr.min.js"></script>
 
 		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/tdt.js"></script>
+		<script>
+		    $(document).ready(function () {
+		        function playVideo() {
+		            $(".play").click(function () {
+		                $(this).children(".introduce__thumbnail").toggleClass("active");
+		            });
+		        }
+		        playVideo();
 
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/library.js"></script>
-		<script type="text/javascript">
-            function killCopy(e){
-            return false
-            }
-            function reEnable(){
-            return true
-            }
-            document.onselectstart=new Function ("return false")
-            if (window.sidebar){
-            document.onmousedown=killCopy
-            document.onclick=reEnable
-            }
-        </script>
-        <script type="text/javascript">
-            var message="NoRightClicking"; function defeatIE() {if (document.all) {(message);return false;}} function defeatNS(e) {if (document.layers||(document.getElementById&&!document.all)) { if (e.which==2||e.which==3) {(message);return false;}}} if (document.layers) {document.captureEvents(Event.MOUSEDOWN);document.onmousedown=defeatNS;} else{document.onmouseup=defeatNS;document.oncontextmenu=defeatIE;} document.oncontextmenu=new Function("return false");
-        </script>
-        
-        
-        @include('frontend.teamplate.menu-mobile')
+		        function slideService() {
+		            $(".slide__service").slick({
+		                dots: false,
+		                infinite: false,
+		                speed: 300,
+		                slidesToShow: 4,
+		                slidesToScroll: 4,
+		                autoplay: true,
+		                arrows: true,
+		                lazyLoad: "ondemand",
+		                responsive: [{
+		                    breakpoint: 1024,
+		                    settings: {
+		                        slidesToShow: 3,
+		                        slidesToScroll: 3,
+		                        infinite: true,
+		                    },
+		                },
+		                {
+		                    breakpoint: 600,
+		                    settings: {
+		                        slidesToShow: 2,
+		                        slidesToScroll: 2,
+		                    },
+		                },
+		                {
+		                    breakpoint: 480,
+		                    settings: {
+		                        slidesToShow: 1,
+		                        slidesToScroll: 1,
+		                    },
+		                },
+		                ],
+		            });
+		        }
+		        slideService();
 
+		        function slideCustomers() {
+		            $(".customers__slide").slick({
+		                infinite: true,
+		                slidesToShow: 1,
+		                slidesToScroll: 1,
+		                lazyLoad: "ondemand",
+		                autoplay: true,
+		            });
+		        }
+		        slideCustomers();
+
+		        function slideNew() {
+		            $(".new__slide").slick({
+		                dots: false,
+		                infinite: false,
+		                speed: 300,
+		                slidesToShow: 4,
+		                slidesToScroll: 4,
+		                autoplay: true,
+		                arrows: true,
+		                lazyLoad: "ondemand",
+		                responsive: [{
+		                    breakpoint: 1024,
+		                    settings: {
+		                        slidesToShow: 3,
+		                        slidesToScroll: 3,
+		                        infinite: true,
+		                    },
+		                },
+		                {
+		                    breakpoint: 600,
+		                    settings: {
+		                        slidesToShow: 2,
+		                        slidesToScroll: 2,
+		                    },
+		                },
+		                {
+		                    breakpoint: 480,
+		                    settings: {
+		                        slidesToShow: 1,
+		                        slidesToScroll: 1,
+		                    },
+		                },
+		                ],
+		            });
+		        }
+		        slideNew();
+		    });
+		</script>
+        
 		@yield('script')
 
 		<script type="text/javascript">

@@ -5,252 +5,282 @@
 		$content = json_decode($contentHome->content);
 		//dd($content);
 	} ?>
-	<style type="text/css" media="screen">
-		.slider_banner--home:after{
-			background: url({{$site_info->background_slide}});
-		    background-size: 100% 100%;
-		}
-		.y-kien-kh .left_ykkh{
-			background: url({{@$content->customer_reviews->image}});
-    		background-size: 100% 100%;
-		}
-	</style>
-	<main id="main-site">
-        <section class="slider_banner--home">
-            <div class="container">
-                <div id="slider-home" class="owl-carousel owl-theme">
-                	@if(!empty($content->slider))
-	                	@foreach($content->slider as $item)
-	                    <div class="item">
-	                        <div class="slide_banner">
-	                            <div class="img_slider--main img-cover">
-	                                <img alt="{{$item->name_h1}}" src="{{url('/').$item->image}}">
+
+	<main id="main" class=" ">
+	    @include('frontend.teamplate.banner')
+	    <section class="home-introduce">
+	        <div class="container">
+	            <div class="module module__home-introduce">
+	                <div class="module__header">
+	                    <h2 class="title">về chúng tôi</h2>
+	                </div>
+	                <div class="module module__content">
+	                    <div class="introduce">
+	                        <div class="introduce__item">
+	                            <div class="play">
+	                                <div class="introduce__thumbnail">
+	                                    <button type="button" class="btn btn__play">
+	                                    <i class="fas fa-play"></i>
+	                                    </button>
+	                                    <img src="https://img.youtube.com/vi/{{getYoutubeEmbedUrl($content->aboutus->link)}}/maxresdefault.jpg" alt="thumbnail__video.jpg" />
+	                                </div>
+	                                <iframe class="frame--iframe" width="100%" height="100%"
+	                                    src="{{'https://www.youtube.com/embed/'. getYoutubeEmbedUrl($content->aboutus->link)}}?autoplay=1&mute=1" frameborder="0"
+	                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+	                                    allowfullscreen></iframe>
 	                            </div>
-	                            <div class="text_slider--main">
-	                                <h2 class="h2-title" title="{{$item->name_h1}}">{{$item->name_h1}}</h2>
-	                                <h3 class="h3-title" title="{{$item->name_h2}}">{{$item->name_h2}}</h3>
-	                                <a href="#" class="btn">{{$item->button}}</a>
+	                        </div>
+	                        <div class="introduce__item">
+	                            <div class="introduce__container">
+	                                <h3 class="introduce__title">{{$content->aboutus->title}}</h3>
+	                                <div class="introduce__content">
+	                                    {{$content->aboutus->desc}}
+	                                </div>
+	                                <a href="page-introduce.html" class="btn btn__view"> TÌM HIỂU THÊM </a>
 	                            </div>
 	                        </div>
 	                    </div>
-	                    @endforeach
-                    @endif
-                </div>
-            </div>
-        </section>
-        <!-- end section slider banner -->
-        <section class="sanpham_banchay">
-            <div class="container">
-                <div class="title_section">
-                    <h2 class="h2_title"><span>Sản phẩm bán chạy</span></h2>
-                </div>
-                <div class="content_section">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            @include('frontend.teamplate.category-products')
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                            <div class="slide_sanpham">
-                                <div id="slider-sanpham" class="owl-carousel owl-theme">
-                                	@foreach($products_selling as $item)
-                                    	@include('frontend.pages.product-item.product-item1')
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- end section san pham ban chay -->
-        @if(!empty(@$content->difference))
-        <section class="su-khac-biet">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
-                        <div class="img_ads img-cover">
-                            <a href="#"><img src="{{url('/').@$content->difference->image}}" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                        <div class="title_section">
-                            <h2 class="h2_title"><span>{{@$content->difference->title}}</span></h2>
-                        </div>
-                        <div class="content_su_kb">
-                            <div class="des_section">
-                                <i class="fas fa-quote-left"></i>
-                                <div class="des">{{@$content->difference->desc}}</div>
-                            </div>
-                            <div class="content">
-                                <div class="list_info d-flex flex-wrap">
-                                	@if(!empty(@$content->difference->content))
-	                                	@foreach(@$content->difference->content as $item)
-	                                    <div class="item_info">
-	                                        <div class="img_item--info img-cover">
-	                                            <a href="{{@$item->link}}"><img src="{{url('/').@$item->image}}" alt="{{@$item->name_h1}}"></a>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-service">
+	        <div class="container">
+	            <div class="module module__home-service">
+	                <div class="module__header">
+	                    <h2 class="title">DỊCH VỤ</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="service">
+	                        <div class="slide__service">
+	                        	@foreach($services as $item)
+	                            <div class="service__item">
+	                                <div class="service__box">
+	                                    <a href="page-detail.html" class="project" title="Tư vấn thiết kế">
+	                                        <div class="frame">
+	                                            <img class="frame--image" src="{{url('/')}}/{{$item->image}}" alt="{{$item->name}}" />
 	                                        </div>
-	                                        <div class="text_item--info">
-	                                            <h3 class="h3_title"><a href="{{@$item->link}}">{{@$item->name_h1}}</a></h3>
-	                                            <a href="{{@$item->link}}" class="btn btn_loadmore">Xem thêm</a>
+	                                        <h3 class="project__text">{{$item->name}}</h3>
+	                                    </a>
+	                                </div>
+	                            </div>
+	                            @endforeach
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-why">
+	        <div class="container">
+	            <div class="module module__home-why">
+	                <div class="module__header">
+	                    <h2 class="title">{{$content->reason->title}}</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="why">
+	                        <div class="why__group">
+	                            <div class="why__item">
+	                                <div class="tab-container">
+	                                    <div class="tab-control">
+	                                        <!-- <span class="control__show">THIẾT KẾ CHUYÊN NGHIỆP</span> -->
+	                                        <ul class="control-list">
+	                                        	<?php $n=0;$rs_first = ''; ?>
+	                                        	@foreach($content->reason->content as $item)
+	                                        	<?php if($n==0){$rs_first = $item;} ?>
+	                                            <li class="control-list__item @if($n==0) active @endif" tab-show="#tab-{{$n+1}}">
+	                                                <div class="why__icon">
+	                                                    <img src="{{url('')}}/{{$item->image}}" alt="icon__1.png" />
+	                                                </div>
+	                                                <span class="why__text"> {{$item->title}} </span>
+	                                            </li>
+	                                            <?php $n++; ?>
+	                                            @endforeach
+	                                        </ul>
+	                                    </div>
+	                                    <div class="why__container">
+	                                        <div class="why__header">
+	                                            <div class="why__header--item why__logo">
+	                                                <img src="{{url('/')}}/{{$content->reason->logo}}" alt="{{url('/')}}/{{$content->reason->title}}" />
+	                                            </div>
+	                                            <span class="why__header--item control__title">{{$rs_first->title}}</span>
+	                                        </div>
+	                                        <div class="tab-content">
+	                                        	<?php $i=0; ?>
+	                                        	@foreach($content->reason->content as $item)
+	                                            <div class="tab-item @if($i==0) active @endif" id="tab-{{$i+1}}">
+	                                                {{$item->content}}
+	                                            </div>
+	                                            <?php $i++; ?>
+	                                            @endforeach
 	                                        </div>
 	                                    </div>
-	                                    @endforeach
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        @endif
-        <!-- end section su-kb -->
-        <section class="sanpham-chinh">
-            <div class="container">
-                <div class="title_section">
-                    <h2 class="h2_title"><span>Sản phẩm</span></h2>
-                </div>
-                <div class="content_section">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
-                            <div class="img_ads2 img-cover">
-                                <a href="#"><img src="{{url('/').@$content->product->image}}" alt="Sản phẩm"></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                            <div class="row">
-                            	@foreach($products as $item)
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
-                                    @include('frontend.pages.product-item.product-item1')
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- end sec san pham chinh -->
-        @if(!empty(@$content->banner_main_image))
-        <section class="bg-ngan">
-            <div class="img_ngan img-cover">
-                <img src="{{url('/').@$content->banner_main_image}}" alt="Banner main">
-            </div>
-        </section>
-        @endif
-        <!-- end section img ngan -->
-        @if(!empty(@$content->customer_reviews))
-        <section class="y-kien-kh">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="left_ykkh">
-                            <div class="title_box">
-                                <h2 class="h2_title">{{@$content->customer_reviews->title}}</h2>
-                            </div>
-                            @if(!empty(@$content->customer_reviews->content))
-                            <div class="content_box">
-                                <div id="slider-ykkh" class="owl-carousel owl-theme">
-                                    @foreach(@$content->customer_reviews->content as $item)
-                                    <div class="item">
-                                        <div class="slide_ykkh">
-                                            <div class="text_ykkh">
-                                                <i class="fas fa-quote-left"></i>
-                                                <h3 class="h3_title">{{@$item->content}}</h3>
-                                            </div>
-                                            <div class="avt_ykkh">
-                                                <div class="avt">
-                                                    <img src="{{url('/').@$item->image}}" alt="{{@$item->title}}">
-                                                </div>
-                                                <div class="info text-center">
-                                                    <h4 class="h4_title">{{@$item->title}}</h4>
-                                                    <div class="des">{{@$item->desc}}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="right_ykkh">
-                            <div class="title_box">
-                                <h2 class="h2_title">đăng ký làm  đại lý</h2>
-                            </div>
-                            <div class="des_box">
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                            </div>
-                            <div class="form_dky">
-                                <form id="frm_contact" action="{{route('home.post-contact')}}">
-                                    @csrf
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="name" placeholder="Họ và tên">
-                                        <span class="fr-error" id="error_name"></span>
-                                    </div>
-                                    <div class="form-group d-flex">
-                                        <div class="input_50">
-                                            <input type="text" class="form-control" name="phone" placeholder="Số điện thoại">
-                                            <span class="fr-error" id="error_phone"></span>
-                                        </div>
-                                        <div class="input_50">
-                                            <input type="text" class="form-control" name="email" placeholder="Email">
-                                            <span class="fr-error" id="error_email"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="textarea_">
-                                            <textarea class="form-control" name="content" placeholder="Nội dung"></textarea>
-                                            <span class="fr-error" id="error_content"></span>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="type" value="2">
-                                    <div class="btn_submit">
-                                        <button class="btn btn-default btn--registration">Gửi</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        @endif
-        <!-- end section y kien khach hang -->
-        <section class="news">
-            <div class="container">
-                <div class="title_section">
-                    <h2 class="h2_title">Tin tức</h2>
-                </div>
-                <div class="content_section">
-                    <div id="slider-news" class="owl-carousel owl-theme">
-                    	@foreach($blogs as $item)
-                        <div class="item">
-                            <div class="item_news">
-                                <div class="img_news img-cover">
-                                    <a href="{{route('home.news-single',['slug' => @$item->slug])}}"><img src="{{url('/').@$item->image}}" alt="{{$item->name}}"></a>
-                                </div>
-                                <div class="text_news">
-                                    <div class="date_time">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <span>{{format_datetime($item->created_at,'d/m/y')}}</span>
-                                    </div>
-                                    <div class="text">
-                                        <h3 class="h3_title"><a href="#">{{$item->name}}</a></h3>
-                                        <div class="des_news">{{$item->desc}}</div>
-                                        <a href="{{route('home.news-single',['slug' => @$item->slug])}}" class="btn btn-default btn_xemthem">Xem thêm</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- end section news -->
-    </main>
+	                                </div>
+	                            </div>
+	                            <div class="why__item">
+	                                <img src="{{url('/')}}/{{$content->reason->image}}" alt="{{url('/')}}/{{$content->reason->title}}" />
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-project">
+	        <div class="container">
+	            <div class="module module__home-project">
+	                <div class="module__header">
+	                    <h2 class="title">Dự án tiêu biểu</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="tab-control">
+	                        <span class="control__show">
+	                        {{$cate_projects[0]->name}}</span>
+	                        <ul class="project__control control-list">
+	                        	@foreach($cate_projects as $l => $item)
+	                            <li class="project__item control-list__item @if($l==0) active @endif" title="{{$item->name}}" tab-show="#project-{{$l+1}}">
+	                                {{$item->name}}
+	                            </li>
+	                            @endforeach
+	                        </ul>
+	                    </div>
+	                    <div class="tab-content">
+
+	                    	@foreach($cate_projects as $l => $item)
+	                        <div class="tab-item @if($l==0) active @endif" id="project-{{$l+1}}">
+	                            <div class="project__group">
+	                            	@foreach($item->Projects as $val)
+	                                <div class="project__item">
+	                                    <div class="project" title="Lorem ipsum">
+	                                        <div class="frame">
+	                                            <img class="frame--image" src="{{url('/')}}/{{$val->image}}" alt="{{$val->title}}" />
+	                                        </div>
+	                                        <h3 class="project__text">{{$val->name}}</h3>
+	                                        <div class="project__hover">
+	                                            <h3>{{$val->name}}</h3>
+	                                            <p>
+	                                                {!! $val->desc  !!}
+	                                            </p>
+	                                            <a href="page-detail.html" class="btn btn__view"> Xem thêm </a>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                @endforeach
+	                            </div>
+	                            <a href="page-project.html" class="btn btn__link"> Xem thêm </a>
+	                        </div>
+	                        @endforeach
+	                        
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-customers">
+	        <div class="container">
+	            <div class="module module__home-customers">
+	                <div class="module__header">
+	                    <h2 class="title">{{$content->customer_reviews->title}}</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="customers__slide">
+	                    	@foreach($content->customer_reviews->content as $item)
+	                        <div class="customers__item">
+	                            <div class="customers">
+	                                <div class="customers__avata">
+	                                    <img class="customers__image" src="{{url('/')}}/{{$item->image}}" alt="{{$item->title}}" />
+	                                </div>
+	                                <div class="customers__content">
+	                                    <h3 class="customers__title">{{$item->title}}</h3>
+	                                    <p class="customers__desc">
+	                                        {{$item->content}}
+	                                    </p>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        @endforeach
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-new">
+	        <div class="container">
+	            <div class="module module__home-new">
+	                <div class="module__header">
+	                    <h2 class="title">TIN TỨC</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="new__slide">
+	                    	@foreach($blogs as $item)
+	                        <div class="new__item">
+	                            <div class="new__box">
+	                                <a href="page-detail.html" class="new__avata d-block"
+	                                    title="{{$item->name}}">
+	                                    <div class="frame">
+	                                        <img class="frame--image" src="{{url('/')}}/{{$item->image}}" alt="{{$item->name}}" />
+	                                    </div>
+	                                </a>
+	                                <div class="new__content">
+	                                    <h3 class="new__title">
+	                                        <a href="page-detail.html" class="new__link">
+	                                        {{$item->name}}
+	                                        </a>
+	                                    </h3>
+	                                    <div class="new__time">
+	                                        <span class="new__icon">
+	                                        <i class="fal fa-clock"></i>
+	                                        </span>
+	                                        {{format_datetime($item->created_at,'d/m/y')}}
+	                                    </div>
+	                                    <p class="new__desc">
+	                                        {{$item->desc}}
+	                                    </p>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        @endforeach
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <section class="home-video">
+	        <div class="container">
+	            <div class="module module__home-video">
+	                <div class="module__header">
+	                    <h2 class="title">Video</h2>
+	                </div>
+	                <div class="module__content">
+	                    <div class="video__group">
+	                    	
+	                    	@foreach($content->video as $item)
+	                        <div class="video__item">
+	                            <div class="play">
+	                                <div class="introduce__thumbnail">
+	                                    <button type="button" class="btn btn__play">
+	                                    <i class="fas fa-play"></i>
+	                                    </button>
+	                                    <img src="https://img.youtube.com/vi/{{getYoutubeEmbedUrl($item->link)}}/maxresdefault.jpg" alt="thumbnail__video--1.jpg" />
+	                                </div>
+	                                <div class="frame">
+	                                    <iframe class="frame--iframe" width="100%" height="100%"
+	                                        src="{{'https://www.youtube.com/embed/'. getYoutubeEmbedUrl($item->link)}}?autoplay=1&mute=1" frameborder="0"
+	                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+	                                        allowfullscreen></iframe>
+	                                </div>
+	                            </div>
+	                            <p class="video__title">
+	                                {{$item->desc}}
+	                            </p>
+	                        </div>
+	                        @endforeach
+	                        
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	</main>
 
 @endsection

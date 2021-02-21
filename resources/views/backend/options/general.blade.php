@@ -19,18 +19,6 @@
 			                	<a href="#activity1" data-toggle="tab" aria-expanded="true">Thông tin liên hệ</a>
 							</li>
 
-							<li class="">
-
-								<a href="#activity7" data-toggle="tab" aria-expanded="true">Sidebar các trang</a>
-
-						 	</li>
-
-						 	<li class="">
-
-								<a href="#activity8" data-toggle="tab" aria-expanded="true">Background các trang</a>
-
-						 	</li>
-
 			               	<li class="">
 			               		<a href="#activity3" data-toggle="tab" aria-expanded="true">Cấu hình seo</a>
 			               	</li>
@@ -41,7 +29,11 @@
 								<a href="#activity5" data-toggle="tab" aria-expanded="true">Header</a>
 							 </li>
 							 <li class="">
-								<a href="#activity6" data-toggle="tab" aria-expanded="true">Video</a>
+								<a href="#activity6" data-toggle="tab" aria-expanded="true">Video iframe footer</a>
+						 	</li>
+
+						 	<li class="">
+								<a href="#activity7" data-toggle="tab" aria-expanded="true">Link page facebook</a>
 						 	</li>
 			            </ul>
 				        <div class="tab-content">
@@ -97,7 +89,23 @@
 
 				                    <div class="col-lg-2">
 				                        <div class="form-group">
-				                           <label>Background footer</label>
+				                           <label>Hình ảnh đại diện khi chia sẻ</label>
+				                           <div class="image">
+				                               <div class="image__thumbnail">
+				                                   <img src="{{ !empty($content->logo_share) ? url('/').$content->logo_share :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
+				                                   <a href="javascript:void(0)" class="image__delete" 
+				                                   onclick="urlFileDelete(this)">
+				                                    <i class="fa fa-times"></i></a>
+				                                   <input type="hidden" value="{{ @$content->logo_share }}" name="content[logo_share]"  />
+				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
+				                               </div>
+				                           </div>
+				                       </div>
+				                    </div>
+
+				                    <div class="col-lg-2">
+				                        <div class="form-group">
+				                           <label>Hình ảnh background footer</label>
 				                           <div class="image">
 				                               <div class="image__thumbnail">
 				                                   <img src="{{ !empty($content->background_footer) ? url('/').$content->background_footer :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
@@ -113,66 +121,20 @@
 
 				                    <div class="col-lg-2">
 				                        <div class="form-group">
-				                           <label>Logo Bộ Công Thương</label>
+				                           <label>Icon bài viết liên quan</label>
 				                           <div class="image">
 				                               <div class="image__thumbnail">
-				                                   <img src="{{ !empty($content->logo_bct) ? url('/').$content->logo_bct :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
+				                                   <img src="{{ !empty($content->icon_bvlq) ? url('/').$content->icon_bvlq :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
 				                                   <a href="javascript:void(0)" class="image__delete" 
 				                                   onclick="urlFileDelete(this)">
 				                                    <i class="fa fa-times"></i></a>
-				                                   <input type="hidden" value="{{ @$content->logo_bct }}" name="content[logo_bct]"  />
+				                                   <input type="hidden" value="{{ @$content->icon_bvlq }}" name="content[icon_bvlq]"  />
 				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
 				                               </div>
 				                           </div>
 				                       </div>
 				                    </div>
-
-				                    <div class="col-lg-2">
-				                        <div class="form-group">
-				                           <label>Hình ảnh đại diện khi chia sẻ</label>
-				                           <div class="image">
-				                               <div class="image__thumbnail">
-				                                   <img src="{{ !empty($content->logo_share) ? url('/').$content->logo_share :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-				                                   <a href="javascript:void(0)" class="image__delete" 
-				                                   onclick="urlFileDelete(this)">
-				                                    <i class="fa fa-times"></i></a>
-				                                   <input type="hidden" value="{{ @$content->logo_share }}" name="content[logo_share]"  />
-				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-				                               </div>
-				                           </div>
-				                       </div>
-				                    </div>
-				                    <div class="col-sm-2">
-										<div class="form-group">
-				                           <label>Background slide</label>
-				                           <div class="image">
-				                               <div class="image__thumbnail">
-				                                   <img src="{{ @$content->background_slide ?  url('/').@$content->background_slide : __IMAGE_DEFAULT__ }}"  
-				                                   data-init="{{ __IMAGE_DEFAULT__ }}">
-				                                   <a href="javascript:void(0)" class="image__delete" onclick="urlFileDelete(this)">
-				                                    <i class="fa fa-times"></i></a>
-				                                   <input type="hidden" value="{{ @$content->background_slide }}" name="content[background_slide]"  />
-				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-				                               </div>
-				                           </div>
-				                       </div>
-									</div>
-
-									<div class="col-sm-2">
-										<div class="form-group">
-				                           <label>Background main</label>
-				                           <div class="image">
-				                               <div class="image__thumbnail">
-				                                   <img src="{{ @$content->background_main ?  url('/').@$content->background_main : __IMAGE_DEFAULT__ }}"  
-				                                   data-init="{{ __IMAGE_DEFAULT__ }}">
-				                                   <a href="javascript:void(0)" class="image__delete" onclick="urlFileDelete(this)">
-				                                    <i class="fa fa-times"></i></a>
-				                                   <input type="hidden" value="{{ @$content->background_main }}" name="content[background_main]"  />
-				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-				                               </div>
-				                           </div>
-				                       </div>
-									</div>
+				                    
 			               		</div>
 
 			               		<div class="row">
@@ -297,246 +259,6 @@
 			               		</div>
 							</div>
 
-							<div class="tab-pane" id="activity7">
-
-								<div class="row">
-									
-									<div class="col-sm-3">
-
-										<h4 class="text-uppercase">Banner side bar trang chi tiết tin tức</h4>
-
-										<div class="row">
-
-											<div class="col-sm-4">
-
-												<div class="form-group">
-
-													<label>Hình ảnh Banner</label>
-
-													<div class="image">
-
-														<div class="image__thumbnail">
-
-															<img src="{{url('/')}}/{{ !empty($content->side_bar->news->banner_2) ? $content->side_bar->news->banner_2 :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-
-															<a href="javascript:void(0)" class="image__delete" 
-
-															onclick="urlFileDelete(this)">
-
-																<i class="fa fa-times"></i></a>
-
-															<input type="hidden" value="{{ @$content->side_bar->news->banner_2 }}" 
-
-															name="content[side_bar][news][banner_2]"  />
-
-															<div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-
-														</div>
-
-													</div>
-
-												</div>
-
-												<div class="form-group">
-
-													<label for="">Tiêu đề</label>
-
-													<input type="text" name="content[side_bar][news][title_2]" class="form-control" value="{{ @$content->side_bar->news->title_2 }}">
-
-												</div>
-
-												<div class="form-group">
-
-													<label for="">Liên kết</label>
-
-													<input type="text" name="content[side_bar][news][link_2]" class="form-control" value="{{ @$content->side_bar->news->link_2 }}">
-
-												</div>
-
-											</div>
-
-										</div>
-
-									</div>
-
-									<div class="col-sm-3">
-
-										<h4 class="text-uppercase">Banner side bar trang chi tiết sản phẩm</h4>
-
-										<div class="row">
-
-											<div class="col-sm-4">
-
-												<div class="form-group">
-
-													<label>Hình ảnh Banner</label>
-
-													<div class="image">
-
-														<div class="image__thumbnail">
-
-															<img src="{{url('/')}}/{{ !empty($content->side_bar->product->banner) ? $content->side_bar->product->banner :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-
-															<a href="javascript:void(0)" class="image__delete" 
-
-															onclick="urlFileDelete(this)">
-
-																<i class="fa fa-times"></i></a>
-
-															<input type="hidden" value="{{ @$content->side_bar->product->banner }}" 
-
-															name="content[side_bar][product][banner]"  />
-
-															<div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-
-														</div>
-
-													</div>
-
-												</div>
-
-												<div class="form-group">
-
-													<label for="">Tiêu đề</label>
-
-													<input type="text" name="content[side_bar][product][title]" class="form-control" value="{{ @$content->side_bar->product->title }}">
-
-												</div>
-
-
-
-												<div class="form-group">
-
-													<label for="">Liên kết</label>
-
-													<input type="text" name="content[side_bar][factory][link]" class="form-control" value="{{ @$content->side_bar->factory->link }}">
-
-												</div>
-
-											</div>
-
-										</div>
-
-									</div>
-
-								</div>
-
-								
-
-							</div>
-
-							<div class="tab-pane" id="activity8">
-
-								<div class="row">
-
-									<h4 class="text-uppercase">Background các trang</h4>
-
-									<div class="row">
-
-										<div class="col-sm-3">
-
-											<div class="form-group">
-
-												<label>Background banner</label>
-
-												<div class="image">
-
-													<div class="image__thumbnail">
-
-														<img src="{{url('/')}}/{{ !empty($content->background_page->slider) ? $content->background_page->slider :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-
-														<a href="javascript:void(0)" class="image__delete" 
-
-														onclick="urlFileDelete(this)">
-
-															<i class="fa fa-times"></i></a>
-
-														<input type="hidden" value="{{ @$content->background_page->slider }}" 
-
-														name="content[background_page][slider]"  />
-
-														<div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-
-													</div>
-
-												</div>
-
-											</div>
-
-										</div>
-
-										<div class="col-sm-3">
-
-											<div class="form-group">
-
-												<label>Background main</label>
-
-												<div class="image">
-
-													<div class="image__thumbnail">
-
-														<img src="{{url('/')}}/{{ !empty($content->background_page->main) ? $content->background_page->main :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-
-														<a href="javascript:void(0)" class="image__delete" 
-
-														onclick="urlFileDelete(this)">
-
-															<i class="fa fa-times"></i></a>
-
-														<input type="hidden" value="{{ @$content->background_page->main }}" 
-
-														name="content[background_page][main]"  />
-
-														<div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-
-													</div>
-
-												</div>
-
-											</div>
-
-										</div>
-
-										<div class="col-sm-3">
-
-											<div class="form-group">
-
-												<label>Background footer main</label>
-
-												<div class="image">
-
-													<div class="image__thumbnail">
-
-														<img src="{{url('/')}}/{{ !empty($content->background_page->main_footer) ? $content->background_page->main_footer :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
-
-														<a href="javascript:void(0)" class="image__delete" 
-
-														onclick="urlFileDelete(this)">
-
-															<i class="fa fa-times"></i></a>
-
-														<input type="hidden" value="{{ @$content->background_page->main_footer }}" 
-
-														name="content[background_page][main_footer]"  />
-
-														<div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
-
-													</div>
-
-												</div>
-
-											</div>
-
-										</div>
-
-									</div>
-
-								</div>
-
-								
-
-							</div>
-							
 			               	<div class="tab-pane" id="activity3">
 			               		<div class="row">
 			               			<div class="col-sm-12">
@@ -670,6 +392,18 @@
 							                </div>
 							            </div>
 									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="activity7">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="">Iframe video</label>
+											<textarea name="content[link_page_facebook]" class="form-control" rows="5">{!! @$content->link_page_facebook !!}</textarea>
+										</div>
+									</div>
+									
 								</div>
 							</div>
 			            </div>

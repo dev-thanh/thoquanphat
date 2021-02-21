@@ -1,109 +1,84 @@
-<?php $search = request()->search !='' ? request()->search : ''; ?>
-<header id="header-site">
-    <div class="header_top">
+<header id="header">
+    <div class="header__top">
         <div class="container">
-            <div class="menu_top">
-                <div class="container">
-                    <div class="nav-left overlay">
-                        <nav class="navbar navbar-expand-md">
-                            @if(count($menuHeader) > 4)
-                                <ul class="navbar-nav navbar_left">
-                                    @foreach($menuHeader as $k => $item)
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{url('/').$item->url}}"><span>{{$item->title}}</span></a>
-                                    </li>
-                                    @if($k==3)
-                                        </ul>
-                                        <ul class="navbar-nav ml-auto navbar_right">
-                                    @endif
-                                    @endforeach
-                                </ul>
-                            @else
-                                <ul class="navbar-nav navbar_left">
-                                    @foreach($menuHeader as $k => $item)
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{url('/').$item->url}}"><span>{{$item->title}}</span></a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </nav>
-                    </div>
+            <div class="top__group">
+                <div class="top__item">
+                    <a href="tel:" class="top__text">
+                    <span class="icon"> <i class="fas fa-phone"></i> </span>( + 84 ) 987
+                    654 321
+                    </a>
+                    <a href="mailto:wensite123@gmail.com" class="top__text">
+                    <span class="icon"> <i class="fal fa-envelope"></i> </span>wensite123@gmail.com
+                    </a>
                 </div>
+                <form class="top__item form__search">
+                    <input type="text" class="form-control form__input" placeholder="Tìm kiếm" />
+                    <button class="btn btn__search">
+                    <i class="fal fa-search"></i>
+                    </button>
+                </form>
+                <a href="#" class="top__item link__instagram">
+                <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="top__item link__facebook">
+                <i class="fab fa-facebook-f"></i>
+                </a>
             </div>
         </div>
     </div>
-    <div class="header_main">
-        <div id="sticky-wrapper" class="sticky-wrapper">
-            <div class="main-menu-bar sticky-header-enable">
-                <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <div class="wp-icon-menu-bar d-none">
-                            <div id="trigger-mobile">
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                            </div>
-                        </div>
-                        <div class="navbar_brand">
-                            <a class="navbar-brand" href="{{route('home.index')}}"><img src="{{url('/').@$site_info->logo}}" alt="Logo"></a>
-                        </div>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
-                                @foreach($menuProducts as $k =>$item)
-                                    @if ($item->parent_id == null)
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link @if (count($item->get_child_cate())) dropdown-toggle @endif" href="{{url('/').$item->url}}" data-toggle="dropdown"><span>{{$item->title}}</span></a>
-                                        @if (count($item->get_child_cate()))
-                                        <div class="dropdown-menu">
-                                            <ul class="navbar-nav flex-column">
-                                                @foreach ($item->get_child_cate() as $value)
-                                                <li class="nav-item dropdown">
-                                                    <a class="nav-link @if (count($value->get_child_cate())) dropdown-toggle @endif" href="{{url('/').$value->url}}" data-toggle="dropdown"><span>{{$value->title}}</span></a>
-                                                    @if (count($value->get_child_cate()))
-                                                    <div class="dropdown-menu">
-                                                        <ul class="navbar-nav flex-column">
-                                                            @foreach ($value->get_child_cate() as $val)
-                                                            <li class="nav-item">
-                                                                <a class="dropdown-item" href="{{url('/').$val->url}}"><span>{{$val->title}}</span></a>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                    @endif
+    
+    <div class="container">
+        <div class="header__group">
+            <div class="group__item">
+                <h1 class="logo">
+                    <a href="{{route('home.index')}}" class="logo__link">
+                    <img src="{{$site_info->logo}}" alt="icon__log" />
+                    </a>
+                </h1>
+            </div>
+            <div class="group__item">
+                <div class="menu__container">
+                    <button class="btn btn__menu">
+                    <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header__menu">
+                        <button class="btn btn__back">
+                        <i class="fas fa-arrow-left"></i>       
+                        </button>
+                        <ul class="menu">
+                            @foreach($menuHeader as $k =>$item)
+                                @if ($item->parent_id == null)
+                                <li class="menu__item">
+                                    <a href="{{url('/').$item->url}}" class="menu__item--link"> {{$item->title}} </a>
+                                    @if (count($item->get_child_cate()))
+                                    <ul>
+                                        @foreach ($item->get_child_cate() as $value)
+                                        <li>
+                                            <a href="{{url('/').$value->url}}"> {{$value->title}} </a>
+                                            @if (count($value->get_child_cate()))
+                                            <ul>
+                                                @foreach ($value->get_child_cate() as $val)
+                                                <li>
+                                                    <a href="{{url('/').$val->url}}"> {{$val->title}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
-                                        </div>
-                                        @endif
-                                    </li>
+                                            @endif
+                                        </li>
+                                        @endforeach
+                                        
+                                    </ul>
                                     @endif
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="search_shop_cart d-flex align-items-center">
-                            <div class="search">
-                                <form class="form-inline my-2 my-lg-0" action="{{route('home.search')}}" method="GET">
-                                    <input class="form-control" type="search" name="search" value="{{@$search}}" placeholder="Search" aria-label="Search">
-                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-                                </form>
-                            </div>
-                            <a href="{{route('home.cart')}}" title="Giỏ hàng">
-                                <div class="shop_cart">
-                                    <i class="fas fa-shopping-basket"></i>
-                                    <div class="text_cart">
-                                        
-                                            <span class="cart_int">{{ Cart::count() }}</span>
-                                        
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </nav>
+                                </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
+            </div>
+            <div class="group__item">
+                <a href="{{route('home.signup-consultation')}}" class="btn btn__res"> Đăng ký tư vấn </a>
             </div>
         </div>
     </div>
-    <input type="hidden" class="min_price_active" value="{{request()->min !='' ? request()->min : ''}}">
-    <input type="hidden" class="max_price_active" value="{{request()->max !='' ? request()->max : '4000000'}}">
 </header>

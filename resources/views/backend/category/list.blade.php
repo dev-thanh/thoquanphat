@@ -9,7 +9,7 @@
             <div class="box-body">
                 @include('flash::message')
                 <div class="btnAdd">
-                    <a href="{{ route($module['module'].'.create') }}?type={{ request()->type=='gift' ? 'gift' : 'product_category' }}">
+                    <a href="{{ route($module['module'].'.create') }}?type={{ request()->type }}">
                         <fa class="btn btn-primary"><i class="fa fa-plus"></i> Thêm</fa>
                     </a>
                 </div>

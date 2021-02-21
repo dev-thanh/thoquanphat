@@ -23,7 +23,7 @@ class PolicyController extends Controller
 
     public function getListPolicy(){
 
-        $data = Policy::all();
+        $data = Policy::where('type',1)->get();
         return view('backend.policy.list-policy',compact('data'));
     }
 
@@ -47,9 +47,13 @@ class PolicyController extends Controller
 
         $input = $request->all();
 
+        //dd($input);
+
         $input['slug'] = $this->createSlug(str_slug($request->name));
 
         $input['status'] = $request->status == 1 ? 1 : null;
+
+        $input['type'] = 1;
 
         $policy = Policy::create($input);
 
@@ -64,7 +68,7 @@ class PolicyController extends Controller
     }
 
     public function postEditPolicy(Request $request, $id){
-         $this->validate($request,
+        $this->validate($request,
             [
                 'name'  => 'required',
                 'content' => 'required',
@@ -132,5 +136,91 @@ class PolicyController extends Controller
         flash('Xóa thành công.')->success();
 
         return redirect()->back();
+    }
+
+
+    public function getListFooterContact(){
+
+        $data = Policy::where('type',2)->orderBy('stt','ASC')->get();
+        return view('backend.policy.list-ft-ct',compact('data'));
+    }
+
+    public function addFooterContact(){
+        return view('backend.policy.add-ftct');
+    }
+
+    public function postAddFooterContact(Request $request){
+        $this->validate($request,
+            [
+                'name'  => 'required',
+                'content' => 'required',
+                'slug'  => 'required',
+            ],
+            [
+                'name.required'     => 'Tiêu đề không được để trống.',
+                'content.required'    => 'Nội dung không được bỏ trống.',
+                'slug.required'     => 'Đường dẫn tĩnh không được bỏ trống.',
+            ]
+        );
+
+        $input = $request->all();
+
+        $input['slug'] = $this->createSlug(str_slug($request->name));
+
+        $input['status'] = $request->status == 1 ? 1 : null;
+
+        $input['content'] = !empty($request->content) ? json_encode($request->content) : null;
+
+        $input['type'] = 2;
+
+        $policy = Policy::create($input);
+
+        flash('Thêm mới thành công.')->success();
+
+        return redirect()->route('policy.list-ftct');
+    }
+
+    public function editFooterContact($id){
+        $data = Policy::find($id);
+        $content = json_decode(@$data->content);
+        return view('backend.policy.edit-ft-ct',compact('data','content'));
+    }
+
+    public function postEditFooterContact(Request $request, $id){
+        $this->validate($request,
+            [
+                'name'  => 'required',
+                'content' => 'required',
+                'slug'  => 'required',
+            ],
+            [
+                'name.required'     => 'Tiêu đề không được để trống.',
+                'content.required'    => 'Nội dung không được bỏ trống.',
+                'slug.required'     => 'Đường dẫn tĩnh không được bỏ trống.',
+            ]
+        );
+
+        $input = $request->all();
+
+        $input['status'] = $request->status == 1 ? 1 : null;
+
+        $input['content'] = !empty($request->content) ? json_encode($request->content) : null;
+
+        $policy = Policy::find($id)->update($input);
+
+
+        flash('Cập nhật thành công.')->success();
+        
+        return redirect()->back();
+    }
+
+    public function deleteFooterContact($id){
+
+        Policy::destroy($id);
+
+        flash('Xóa thành công.')->success();
+
+        return redirect()->back();
+        
     }
 }

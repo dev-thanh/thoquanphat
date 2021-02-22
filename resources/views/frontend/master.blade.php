@@ -419,5 +419,31 @@
 			{!! $site_info->script !!}
 		@endif
 
+		@if(!empty(@$site_info->facebook_chat))
+	    <!-- Load Facebook SDK for JavaScript -->
+	    <?php $lag = app()->getLocale() =='vi' ? 'vi_VN' : 'en_US'; ?>
+	    <div id="fb-root"></div>
+	    <script>
+	    window.fbAsyncInit = function() {
+	        FB.init({
+	            xfbml: true,
+	            version: 'v9.0'
+	        });
+	    };
+
+	    (function(d, s, id) {
+	        var js, fjs = d.getElementsByTagName(s)[0];
+	        if (d.getElementById(id)) return;
+	        js = d.createElement(s);
+	        js.id = id;
+	        js.src = 'https://connect.facebook.net/{{$lag}}/sdk/xfbml.customerchat.js';
+	        fjs.parentNode.insertBefore(js, fjs);
+	    }(document, 'script', 'facebook-jssdk'));
+	    </script>
+	    <!-- Your Chat Plugin code -->
+	    <div class="fb-customerchat" attribution=setup_tool page_id="{{@$site_info->facebook_chat}}" logged_in_greeting="{{trans('message.xin_chao_chung_toi_co_the_giup_gi_cho_ban')}}" logged_out_greeting="{{trans('message.xin_chao_chung_toi_co_the_giup_gi_cho_ban')}}">
+	    </div>
+	    @endif
+
 	</body>
 </html>

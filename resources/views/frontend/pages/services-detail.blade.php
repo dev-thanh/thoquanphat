@@ -72,9 +72,9 @@
 	                                            {{format_datetime($item->created_at,'d/ m/ y')}}
 	                                        </p>
 	                                    </div>
-	                                    <p class="desc">
-	                                        {{ @$item->desc }}
-	                                    </p>
+	                                    <div class="desc">
+	                                        {!! @$item->desc !!}
+	                                    </div>
 	                                    <div class="text-center">
 	                                        <a href="{{route('home.services-detail',['slug'=>$item->slug])}}" class="btn btn__link"> Chi tiết </a>
 	                                    </div>

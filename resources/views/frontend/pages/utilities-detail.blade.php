@@ -73,7 +73,7 @@
 	                                        </p>
 	                                    </div>
 	                                    <p class="desc">
-	                                        {{ @$item->desc }}
+	                                        {!! @$item->desc !!}
 	                                    </p>
 	                                    <div class="text-center">
 	                                        <a href="{{route('home.services-detail',['slug'=>$item->slug])}}" class="btn btn__link"> Chi tiết </a>

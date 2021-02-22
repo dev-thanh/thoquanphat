@@ -17,6 +17,8 @@
 	    <meta name="geo.placename" content="Hà Nội" />
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	 	<meta name="_token" content="{{csrf_token()}}" />
+	 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 	 	<link rel="canonical" href="{{ \Request::fullUrl() }}">
 
 
@@ -31,7 +33,7 @@
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/jquery.min.js"></script>
+		<!-- <script type="text/javascript" src="{{ __BASE_URL__ }}/js/jquery.min.js"></script> -->
 
 		<style>
 	        -webkit-touch-callout: none;

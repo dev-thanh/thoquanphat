@@ -399,7 +399,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="form-group">
-											<label for="">Iframe video</label>
+											<label for="">Link Facebook page</label>
 											<textarea name="content[link_page_facebook]" class="form-control" rows="5">{!! @$content->link_page_facebook !!}</textarea>
 										</div>
 									</div>

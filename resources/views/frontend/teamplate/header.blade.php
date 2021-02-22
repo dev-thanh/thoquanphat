@@ -10,8 +10,8 @@
                     <span class="icon"> <i class="fal fa-envelope"></i> </span>{{@$site_info->email}}
                     </a>
                 </div>
-                <form class="top__item form__search">
-                    <input type="text" class="form-control form__input" placeholder="Tìm kiếm" />
+                <form class="top__item form__search" action="{{route('home.search')}}" method="GET">
+                    <input type="text" class="form-control form__input" name="search" value="{{ request()->search !='' ? request()->search : '' }}" placeholder="Tìm kiếm" />
                     <button class="btn btn__search">
                     <i class="fal fa-search"></i>
                     </button>

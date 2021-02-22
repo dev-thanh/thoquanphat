@@ -30,6 +30,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/page.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/responsive.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/toastr.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ __BASE_URL__ }}/css/tdt.css" />
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
 

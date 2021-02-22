@@ -28,17 +28,8 @@ use App\Models\Utilities;
 use App\Models\UtilitiesCategory;
 use App\Models\Advisory;
 use App\Models\Contact;
-
-
 use App\Models\Posts;
-use App\Models\Customer;
-use App\Models\Products;
 use App\Models\Categories;
-use App\Models\ProductCategory;
-use App\Models\Order;
-use App\Models\OrderDetail;
-use App\Models\Agency;
-use App\Models\Banks;
 use App\Models\Policy;
 use DB;
 use Cart;
@@ -628,25 +619,29 @@ class IndexController extends Controller
 
         SEO::setTitle('Tìm kiếm từ khóa: '.$key);
 
-        $data = Products::where(function ($query) use ($request) {
-            if($request->min !=''){
-                $query->where('products.price_priority','>=',$request->min);
-                $query->where('products.price_priority','<=',$request->max);
-            }
+        $services = Services::where('status',1)
+        ->where(function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->search . '%');
-        })->orderBy('created_at', 'DESC')->paginate(9);
+        })->orderBy('created_at', 'DESC')->paginate(6);
 
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
+        $projects = Projects::where('status',1)
+        ->where(function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        })->orderBy('created_at', 'DESC')->paginate(6);
 
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
+        $beautiful_house = BeautifulHouse::where('status',1)
+        ->where(function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        })->orderBy('created_at', 'DESC')->paginate(6);
 
-        return view('frontend.pages.archives-products', compact('dataSeo', 'data','products_new','products_hot'));
+        // dd($beautiful_house);
+
+        // $products_hot = Products::where([
+        //     'status' => 1,
+        //     'hot' => 1
+        // ])->orderBy('stt')->get()->take(5);
+
+        return view('frontend.pages.search', compact('dataSeo', 'services','projects','beautiful_house'));
     }
 
     public function policy($slug){

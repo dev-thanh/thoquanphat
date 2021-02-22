@@ -1,0 +1,124 @@
+@extends('frontend.master')
+@section('main')
+
+   <?php if(!empty($contentHome)){
+      $content = json_decode($contentHome->content);
+   } ?>
+
+   	<main id="main" class=" ">
+	    
+	    @include('frontend.teamplate.banner')  
+	    <section class="page-project" style="padding: 2rem 0">
+	        <div class="container">
+	            <div class="module module__page-project"> 
+	    			<div class="module__header">
+	                    <h2 class="title">Kết quả tìm kiếm</h2>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    @if(count(@$services) > 0)
+	    <section class="page-project">
+	        <div class="container">
+	            <div class="module module__page-project">
+	                <div class="module__header">
+	                    <h3 class="name-search">Dịch vụ</h3>
+	                </div>
+	                <div class="module__content">
+	                    <div class="project__group">
+	                    	@foreach(@$services as $item)
+	                        <div class="project__item">
+	                            <div class="project" title="Lorem ipsum">
+	                                <div class="frame">
+	                                    <img class="frame--image" src="{{url('/')}}/{{@$item->image}}" alt="{{@$item->name}}" />
+	                                </div>
+	                                <h3 class="project__text">{{@$item->name}}</h3>
+	                                <div class="project__hover">
+	                                    <div class="project__hover-wap">
+	                                        <h3>{{@$item->name}}</h3>
+	                                        
+	                                        {!! @$item->desc !!}
+	                                       
+	                                        <a href="{{route('home.services-detail',['slug'=>$item->slug])}}" class="btn btn__view"> Xem thêm </a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        @endforeach
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    @endif
+	    @if(count(@$projects) > 0)
+	    <section class="page-project">
+	        <div class="container">
+	            <div class="module module__page-project">
+	                <div class="module__header">
+	                    <h3 class="name-search">Dự án</h3>
+	                </div>
+	                <div class="module__content">
+	                    <div class="project__group">
+	                    	@foreach(@$projects as $item)
+	                        <div class="project__item">
+	                            <div class="project" title="Lorem ipsum">
+	                                <div class="frame">
+	                                    <img class="frame--image" src="{{url('/')}}/{{@$item->image}}" alt="{{@$item->name}}" />
+	                                </div>
+	                                <h3 class="project__text">{{@$item->name}}</h3>
+	                                <div class="project__hover">
+	                                    <div class="project__hover-wap">
+	                                        <h3>{{@$item->name}}</h3>
+	                                        
+	                                        {!! @$item->desc !!}
+	                                       
+	                                        <a href="{{route('home.project-detail',['slug'=>$item->slug])}}" class="btn btn__view"> Xem thêm </a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        @endforeach
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    @endif
+	    @if(count(@$beautiful_house) > 0)
+	    <section class="page-project">
+	        <div class="container">
+	            <div class="module module__page-project">
+	                <div class="module__header">
+	                    <h3 class="name-search">Mẫu nhà đẹp</h3>
+	                </div>
+	                <div class="module__content">
+	                    <div class="project__group">
+	                    	@foreach(@$beautiful_house as $item)
+	                        <div class="project__item">
+	                            <div class="project" title="Lorem ipsum">
+	                                <div class="frame">
+	                                    <img class="frame--image" src="{{url('/')}}/{{@$item->image}}" alt="{{@$item->name}}" />
+	                                </div>
+	                                <h3 class="project__text">{{@$item->name}}</h3>
+	                                <div class="project__hover">
+	                                    <div class="project__hover-wap">
+	                                        <h3>{{@$item->name}}</h3>
+	                                        
+	                                        {!! @$item->desc !!}
+	                                       
+	                                        <a href="{{route('home.beautiful-home-detail',['slug'=>$item->slug])}}" class="btn btn__view"> Xem thêm </a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        @endforeach
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    @endif
+	</main>
+
+@endsection

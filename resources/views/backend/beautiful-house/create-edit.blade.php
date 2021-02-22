@@ -38,7 +38,7 @@
 		                                </div>
 		                                @if(isUpdate(@$module['action']))
 			                                <div class="form-group" id="edit-slug-box">
-			                                    @include('backend.services.permalink')
+			                                    @include('backend.beautiful-house.permalink')
 			                                </div>
 		                                @endif
                                     </div>

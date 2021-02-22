@@ -56,7 +56,7 @@
 	                        	@foreach($services as $item)
 	                            <div class="service__item">
 	                                <div class="service__box">
-	                                    <a href="page-detail.html" class="project" title="Tư vấn thiết kế">
+	                                    <a href="{{route('home.services-detail',['slug'=>$item->slug])}}" class="project" title="Tư vấn thiết kế">
 	                                        <div class="frame">
 	                                            <img class="frame--image" src="{{url('/')}}/{{$item->image}}" alt="{{$item->name}}" />
 	                                        </div>
@@ -158,16 +158,16 @@
 	                                        <h3 class="project__text">{{$val->name}}</h3>
 	                                        <div class="project__hover">
 	                                            <h3>{{$val->name}}</h3>
-	                                            <p>
-	                                                {!! $val->desc  !!}
-	                                            </p>
-	                                            <a href="page-detail.html" class="btn btn__view"> Xem thêm </a>
+	                                            
+	                                            {!! $val->desc  !!}
+	                                            
+	                                            <a href="{{route('home.project-detail',['slug'=>$val->slug])}}" class="btn btn__view"> Xem thêm </a>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                @endforeach
 	                            </div>
-	                            <a href="page-project.html" class="btn btn__link"> Xem thêm </a>
+	                            <a href="{{route('home.project-completed')}}" class="btn btn__link"> Xem thêm </a>
 	                        </div>
 	                        @endforeach
 	                        
@@ -215,7 +215,7 @@
 	                    	@foreach($blogs as $item)
 	                        <div class="new__item">
 	                            <div class="new__box">
-	                                <a href="page-detail.html" class="new__avata d-block"
+	                                <a href="{{route('home.news-single',['slug'=>$item->slug])}}" class="new__avata d-block"
 	                                    title="{{$item->name}}">
 	                                    <div class="frame">
 	                                        <img class="frame--image" src="{{url('/')}}/{{$item->image}}" alt="{{$item->name}}" />
@@ -223,7 +223,7 @@
 	                                </a>
 	                                <div class="new__content">
 	                                    <h3 class="new__title">
-	                                        <a href="page-detail.html" class="new__link">
+	                                        <a href="{{route('home.news-single',['slug'=>$item->slug])}}" class="new__link">
 	                                        {{$item->name}}
 	                                        </a>
 	                                    </h3>

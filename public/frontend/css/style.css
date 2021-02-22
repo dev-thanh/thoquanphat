@@ -364,3 +364,6 @@
 			.mCustomScrollBox {
 				height: auto!important;
 			}
+            #btntra{
+                cursor: pointer;
+            }

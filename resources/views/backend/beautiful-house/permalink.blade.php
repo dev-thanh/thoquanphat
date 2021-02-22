@@ -1,8 +1,8 @@
 <label class="control-label required" for="current-slug" aria-required="true">Đường dẫn:</label>
 <span id="sample-permalink">
-	<a class="permalink" target="_blank" href="{{ asset('dich-vu/'.$data->slug ) }}">
+	<a class="permalink" target="_blank" href="{{ asset('mau-nha-dep/'.$data->slug ) }}">
     	<span class="default-slug">
-    		{{ asset('dich-vu') }}/<span id="editable-post-name">{{ $data->slug }}</span>
+    		{{ asset('mau-nha-dep') }}/<span id="editable-post-name">{{ $data->slug }}</span>
     	</span>
 	</a>
 </span>
@@ -12,7 +12,7 @@
     <button type="button" class="cancel button-link">Hủy</button>
 </span>
 <input type="hidden" id="current-slug"  value="{{ $data->slug }}">
-<input type="hidden" id="baseUrl" value="{{ asset('dich-vu') }}">
+<input type="hidden" id="baseUrl" value="{{ asset('mau-nha-dep') }}">
 <input type="hidden" id="idPost" value="{{ $data->id }}">
 
 

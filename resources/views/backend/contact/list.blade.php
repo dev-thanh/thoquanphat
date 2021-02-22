@@ -21,9 +21,12 @@
 				            <th width="10px">STT</th>
 				            <th>Họ tên</th>
 				            <th>Số điện thoại</th>
-				            <th>Email</th>
-				            <th>Tiêu đề</th>
-				            <th>Thời gian gửi</th>
+				            <th>Năm sinh</th>
+                            <th>Email</th>
+				            <th>Thông tin công trình</th>
+                            <th>Gói dịch vụ</th>
+				            <th>Hạng mục</th>
+                            <th>Phong cách</th>
 				            <th width="90px">Trạng thái</th>
 				            <th width="100px">Thao tác</th>
 				          </tr>
@@ -49,9 +52,12 @@
                     { data: 'DT_RowIndex',name: 'DT_RowIndex'},
                     { data: 'name', name: 'name' },
                     { data: 'phone', name: 'phone' },
+                    { data: 'nam_sinh', name: 'nam_sinh' },
                     { data: 'email', name: 'email' },
-                    { data: 'title', name: 'title' },
-                    { data: 'created_at', name: 'created_at' },
+                    { data: 'thongtin_congtrinh', name: 'thongtin_congtrinh' },
+                    { data: 'goi_dich_vu', name: 'goi_dich_vu' },
+                    { data: 'hang_muc', name: 'hang_muc' },
+                    { data: 'phong_cach', name: 'phong_cach' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action' },
                     

@@ -11,23 +11,6 @@
     </a>
 </li>
 
-<li class="treeview {{ (Request::segment(2) === 'category' && request()->type =='product_category') || (Request::segment(2) === 'products' && request()->type =='product') ? 'active' : null }}">
-    <a href="#">
-        <i class="fa fa-building" aria-hidden="true"></i> <span>Sản phẩm</span>
-        <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-        <li class="{{ Request::segment(2) === 'products' && request()->type =='product' ? 'active' : null }}">
-            <a href="{{ route('products.index') }}?type=product"><i class="fa fa-circle-o"></i> Danh sách sản phẩm</a>
-        </li>
-        <li class="{{ Request::segment(2) === 'category' && request()->type !='gift' ? 'active' : null }}">
-            <a href="{{ route('category.index') }}?type=product_category"><i class="fa fa-circle-o"></i> Danh mục sản phẩm</a>
-        </li>
-    </ul>
-</li>
-
 <li class="treeview {{ (Request::segment(2) === 'category' && request()->type =='category_services' ) || (Request::segment(2) === 'services') ? 'active' : null }}">
     <a href="#">
         <i class="fa fa-building" aria-hidden="true"></i> <span>Dịch vụ</span>
@@ -126,12 +109,20 @@
 
 
 <li class="{{ Request::segment(2) === 'posts' && request('type') == 'blog' ? 'active' : null }}">
-    <a href="{{ route('posts.index', ['type'=>'blog']) }}"><i class="fa fa-building"></i>Blog</a>
+    <a href="{{ route('posts.index', ['type'=>'blog']) }}"><i class="fa fa-building"></i>Tin tức</a>
 </li>
 
 <li class="{{ Request::segment(2) == 'pages' ? 'active' : null  }}">
     <a href="{{ route('pages.list') }}">
         <i class="fa fa-paper-plane" aria-hidden="true"></i> <span>Cài đặt trang</span>
+    </a>
+</li>
+
+<li class="{{ Request::segment(2) == 'contact' ? 'active' : null  }}">
+    <?php $number = \App\Models\Contact::where('status', 0)->count() ?>
+    <a href="{{ route('get.list.contact') }}">
+        <i class="fa fa-bell" aria-hidden="true"></i> <span>Liên hệ ({{ $number }})
+        </span>
     </a>
 </li>
 

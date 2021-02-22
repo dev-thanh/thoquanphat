@@ -13,21 +13,26 @@ class ContactController extends Controller
     public function getListContact(Request $request)
     {
         if ($request->ajax()) {
-            $data = Contact::with('Customer')->orderBy('id', 'DESC')->get();
+            $data = Contact::orderBy('id', 'DESC')->get();
             return Datatables::of($data)
                 ->addColumn('checkbox', function ($data) {
                     return '<input type="checkbox" name="chkItem[]" value="' . $data->id . '">';
                 })->addColumn('name', function ($data) {
-                    return $data->Customer->name;
+                    return $data->name;
                 })->addColumn('phone', function ($data) {
-                    return $data->Customer->phone;
+                    return $data->phone;
+                })->addColumn('nam_sinh', function ($data) {
+                    return $data->nam_sinh;
                 })->addColumn('email', function ($data) {
-                    return $data->Customer->email;
-                })->addColumn('type', function ($data) {
-                    if($data->type == 'Registration' ){
-                        return 'Đăng ký nhận tin';
-                    }
-                    return 'Liên hệ từ khách hàng';
+                    return $data->email;
+                })->addColumn('thong_tin_cong_trinh', function ($data) {
+                    return $data->thong_tin_cong_trinh;
+                })->addColumn('goi_dich_vu', function ($data) {
+                    return $data->goi_dich_vu;
+                })->addColumn('hang_muc', function ($data) {
+                    return $data->hang_muc;
+                })->addColumn('phong_cach', function ($data) {
+                    return $data->phong_cach;
                 })->addColumn('status', function ($data) {
                     if ($data->status == 1) {
                         $status = ' <span class="label label-success">Đã xem</span>';
@@ -43,7 +48,7 @@ class ContactController extends Controller
                             data-href="' . route('contact.destroy', $data->id) . '"
                             data-toggle="modal" data-target="#confim">
                             <i class="fa fa-trash-o fa-fw"></i> Xóa</a>';
-                })->rawColumns(['checkbox', 'type', 'phone', 'name', 'email', 'status', 'action', 'name'])
+                })->rawColumns(['checkbox', 'type', 'phone', 'name','nam_sinh', 'email','thong_tin_cong_trinh','goi_dich_vu','hang_muc','phong_cach', 'status', 'action', 'name'])
                 ->addIndexColumn()
                 ->make(true);
         }

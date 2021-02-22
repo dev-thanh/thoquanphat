@@ -27,12 +27,12 @@ use App\Models\CategoryBeautifulHouse;
 use App\Models\Utilities;
 use App\Models\UtilitiesCategory;
 use App\Models\Advisory;
+use App\Models\Contact;
 
 
 use App\Models\Posts;
 use App\Models\Customer;
 use App\Models\Products;
-use App\Models\Contact;
 use App\Models\Categories;
 use App\Models\ProductCategory;
 use App\Models\Order;
@@ -144,7 +144,7 @@ class IndexController extends Controller
 
     public function getListAbout(){
 
-        $dataSeo = Pages::where('type', 'aboutus')->first();
+        $dataSeo = Pages::where('type', 'about')->first();
 
         $this->createSeo($dataSeo);
 
@@ -440,6 +440,61 @@ class IndexController extends Controller
 
     }
 
+    public function postContact(Request $request){
+
+        $result = [];
+        if ($request->name == '' || $request->name == null) {
+            $result['message_name'] = 'Bạn chưa nhập họ tên';
+        }
+        
+        if ($request->phone == '' || $request->phone == null) {
+            $result['message_phone'] = 'Bạn chưa nhập số điện thoại';
+        } else {
+            if (!is_numeric($request->phone) || strlen($request->phone) != 10) {
+                $result['message_phone'] = 'Vui lòng nhập đúng định dạng số điện thoại. Ví dụ: 0989888456';
+            }
+        }
+
+        if($result != []){
+            return json_encode($result);
+        }
+
+        $title = 'Liên hệ từ khách hàng';
+
+        $result['success'] = 'Gửi liên hệ thành công, chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất. Xin cảm ơn !';
+
+        $input = $request->all();
+
+        $input['status'] = 0;
+
+        $data = Contact::create($input);
+
+        $content_email = [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'male' => $request->male,
+            'nam_sinh' => $request->nam_sinh,
+            'thongtin_congtrinh' => $request->thongtin_congtrinh,
+            'goi_dich_vu' => $request->goi_dich_vu,
+            'hang_muc' => $request->hang_muc,
+            'phong_cach' => $request->phong_cach,
+            'url' => 'dfsdfd'
+        ]; 
+
+        $email_admin = getOptions('general', 'email_admin');
+
+        Mail::send('frontend.mail.mail-contact', $content_email, function ($msg) use($email_admin,$title) {
+
+            $msg->from(config('mail.mail_from'), 'Website - Thọ Quang Phát');
+
+            $msg->to($email_admin, 'Website - Thọ Quang Phát')->subject($title);
+
+        });
+        
+        return json_encode($result);
+
+    }
+
     public function signupConsultation(){
 
         $dataSeo = Pages::where('type', 'advisory')->first();
@@ -518,24 +573,6 @@ class IndexController extends Controller
 
     }
 
-
-
-
-
-
-
-
-
-
-
-    public function getFaq(){
-
-        $this->createSeo();
-
-        $contentHome = Pages::where('type', 'faq')->first();
-
-        return view('frontend.pages.faq',compact('contentHome'));
-    }
     public function getListNews()
     {
         $dataSeo = Pages::where('type', 'news')->first();
@@ -557,6 +594,8 @@ class IndexController extends Controller
 
         $this->createSeoPost($data);
 
+        $post_same_category = Posts::where('type', 'blog')->where('id','!=',$data->id)->get()->take(4);
+
         $post_view = Posts::where('status', 1)->orderBy('view', 'DESC')->paginate(3);
 
         $cookiname = 'view_post_'.$data->id;
@@ -571,407 +610,11 @@ class IndexController extends Controller
         }
 
         $minutes = 180;
-        $response = new \Illuminate\Http\Response(view('frontend.pages.single-news', compact('dataSeo', 'data', 'post_view')));
+        $response = new \Illuminate\Http\Response(view('frontend.pages.single-news', compact('dataSeo', 'data', 'post_view','post_same_category')));
 
         $response->withCookie(cookie($cookiname, 1, $minutes));
 
         return $response;
-
-    }
-
-    public function getStory(){
-
-        $dataSeo = Pages::where('type', 'story')->first();
-
-        $this->createSeo($dataSeo);
-
-        return view('frontend.pages.story',compact('dataSeo'));
-    }
-
-    public function getAgency(){
-
-        $dataSeo = Pages::where('type', 'agency')->first();
-
-        $this->createSeo($dataSeo);
-
-        $agency_mb = Agency::where('status',1)->where('area','mien-bac')->paginate(4);
-        $agency_mt = Agency::where('status',1)->where('area','mien-trung')->paginate(4);
-        $agency_mn = Agency::where('status',1)->where('area','mien-nam')->paginate(4);
-
-        return view('frontend.pages.agency',compact('dataSeo','agency_mb','agency_mt','agency_mn'));
-
-    }
-
-    public function getListProducts(Request $request)
-    {
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $this->createSeo($dataSeo);
-
-        $data = Products::where([
-            'status' => 1,
-            'type' => 'product'
-        ])->where(function($q) use ($request) {
-            if($request->min !=''){
-                $q->where('products.price_priority','>=',$request->min);
-                $q->where('products.price_priority','<=',$request->max);
-            }
-        })->orderBy('stt','DESC')
-        ->paginate(9);
-
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
-
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
-
-        return view('frontend.pages.archives-products', compact('dataSeo', 'data','products_new','products_hot'));
-    }
-
-    public function getSingleProduct($slug)
-    {
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $data = Products::where('status', 1)->where('slug', $slug)->firstOrFail();
-
-        $this->createSeoPost($data);
-
-        $product_hot  = Products::where('id', '!=', $data->id)
-        ->where('status', 1)
-        ->where('hot', 1)->orderBy('created_at', 'DESC')->get();
-        
-        return view('frontend.pages.single-product', compact('dataSeo', 'data', 'product_hot'));
-    }
-
-    public function getCatetoryProducts(Request $request, $slug)
-    {
-
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $category = Categories::where('slug', $slug)->first();
-
-        $this->createSeoPost($category);
-
-        $data = ProductCategory::select('products.*')
-            ->where('product_category.id_category',$category->id)
-            ->join('products','products.id','=','product_category.id_product')
-            ->where(function($q) use ($request) {
-                if($request->min !=''){
-                    $q->where('products.price_priority','>=',$request->min);
-                    $q->where('products.price_priority','<=',$request->max);
-                }
-            })->orderBy('stt','DESC')
-            ->paginate(9);
-
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
-
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
-
-        return view('frontend.pages.product-category', compact('dataSeo', 'category', 'data', 'products_new', 'products_hot'));
-    }
-
-    /* Products Gift */
-    public function getListProductsGift(Request $request)
-    {
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $this->createSeo($dataSeo);
-
-        $data = Products::where([
-            'status' => 1,
-            'type' => 'gift'
-        ])->where(function($q) use ($request) {
-            if($request->min !=''){
-                $q->where('products.price_priority','>=',$request->min);
-                $q->where('products.price_priority','<=',$request->max);
-            }
-        })->orderBy('stt','DESC')
-        ->paginate(9);
-
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
-
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
-
-        return view('frontend.pages.archives-products-gift', compact('dataSeo', 'data','products_new','products_hot'));
-    }
-
-    public function getSingleProductGift($slug)
-    {
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $data = Products::where('status', 1)->where('slug', $slug)->firstOrFail();
-
-        $this->createSeoPost($data);
-
-        $product_hot  = Products::where('id', '!=', $data->id)
-        ->where('status', 1)
-        ->where('hot', 1)->orderBy('created_at', 'DESC')->get();
-        
-        return view('frontend.pages.single-product-gift', compact('dataSeo', 'data', 'product_hot'));
-    }
-
-    public function getCatetoryProductsGift(Request $request, $slug)
-    {
-
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $category = Categories::where('slug', $slug)->first();
-
-        $this->createSeoPost($category);
-
-        $data = ProductCategory::select('products.*')
-            ->where('product_category.id_category',$category->id)
-            ->join('products','products.id','=','product_category.id_product')
-            ->where(function($q) use ($request) {
-                if($request->min !=''){
-                    $q->where('products.price_priority','>=',$request->min);
-                    $q->where('products.price_priority','<=',$request->max);
-                }
-            })->orderBy('stt','DESC')
-            ->paginate(9);
-
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
-
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
-
-        return view('frontend.pages.product-category-gift', compact('dataSeo', 'category', 'data', 'products_new', 'products_hot'));
-    }
-
-    public function getListProductsSale(Request $request){
-
-        $dataSeo = Pages::where('type', 'product')->first();
-
-        $this->createSeo($dataSeo);
-
-        $data = Products::where([
-            'status' => 1,
-            'is_sale' => 1
-        ])->where(function($q) use ($request) {
-            if($request->min !=''){
-                $q->where('products.price_priority','>=',$request->min);
-                $q->where('products.price_priority','<=',$request->max);
-            }
-        })->orderBy('stt','DESC')
-        ->paginate(9);
-
-        $products_new = Products::where([
-            'status' => 1,
-            'is_new' => 1
-        ])->orderBy('stt')->get()->take(3);
-
-        $products_hot = Products::where([
-            'status' => 1,
-            'hot' => 1
-        ])->orderBy('stt')->get()->take(5);
-
-        return view('frontend.pages.products-sale', compact('dataSeo', 'data','products_new','products_hot'));
-        
-    }
-
-    /* Add Cart -- Check Out */
-
-    public function postAddCart(Request $request)
-    {
-        $idProduct   = $request->id_product;
-        
-        $dataProduct = Products::findOrFail($idProduct);
-
-        $dataCart    = [
-            'id'      => $dataProduct->id,
-            'name'    => $dataProduct->name,
-            'qty'     => 1,
-            'price'   => $request->price,
-            'weight'  => 0,
-            'options' => [
-                'image'       => $dataProduct->image,
-                'slug'        => $dataProduct->slug,
-                'attributes'  => !empty($request->input('attributes')) ? $request->input('attributes') : null,
-                'gift'        => !empty($request->gift) ? $request->gift : null,
-            ],
-        ];
-
-        Cart::add($dataCart);
-
-        return back()->with(['toastr' => 'Thêm vào giỏ hàng thành công.']);
-    }
-
-    public function getAddCart(Request $request)
-    {
-        $idProduct   = $request->id;
-
-        $dataProduct = Products::findOrFail($idProduct);
-
-        $dataCart    = [
-            'id'      => $dataProduct->id,
-            'name'    => $dataProduct->name,
-            'qty'     => 1,
-            'price'   => !empty($dataProduct->price_sale) ? $dataProduct->price_sale : $dataProduct->price,
-            'weight'  => 0,
-            'options' => [
-                'image'       => $dataProduct->image,
-                'slug'        => $dataProduct->slug,
-                'attributes'  => !empty($request->input('attributes')) ? $request->input('attributes') : null,
-                'gift'        => !empty($request->gift) ? $request->gift : null,
-            ],
-        ];
-        Cart::add($dataCart);
-        return back()->with(['toastr' => 'Thêm vào giỏ hàng thành công.']);
-    }
-
-    public function getCart()
-    {
-        $dataSeo = Pages::where('type', 'cart')->first();
-
-        $this->createSeo($dataSeo);
-
-        $dataProducts = Products::orderBy('created_at','DESC')->take(12)->get();
-
-        $banks = Banks::where('status',1)->get();
-
-        return view('frontend.pages.cart', compact('dataProducts','dataSeo','banks'));
-    }
-
-    public function getRemoveCart(Request $request)
-    {
-        Cart::remove($request->id);
-        $empty = '';
-        
-        $toastr = 'Xóa thành công sản phẩm ra khỏi giỏ hàng';
-        if(Cart::count() ==0){
-            $empty = 'Không có sản phẩm nào trong giỏ hàng';
-        }
-        
-        return response()->json([
-                'toastr' => $toastr,
-                'total' => number_format(Cart::total(), 0, '.', '.').'đ',
-                'count' => Cart::count(),
-                'empty' => $empty,
-        ]);
-    }
-
-    public function getUpdateCart(Request $request)
-    {
-        Cart::update($request->id, $request->qty);
-        $item = Cart::get($request->id);
-        $price_new = number_format($item->qty*$item->price, 0, '.', '.').'đ';
-        return response()->json([
-                'price_new'=>$price_new,
-                'total' => number_format(Cart::total(), 0, '.', '.').'đ',
-                'count' => Cart::count()
-        ]);
-    }
-
-    public function postCheckOut(Request $request)
-    {
-              
-        $message = [
-            'name.required' => 'Họ tên không được để trống.',
-            'phone.required' => 'Số điện thoại không được để trống.',
-            'phone.min' => 'Số điện thoại không hợp lệ.',
-            'phone.max' => 'Số điện thoại không hợp lệ.',
-            'email.required' => 'Email không được để trống.',
-            'email.email' => 'Email không đúng định dạng.',
-            'address.required'     => 'Bạn chưa nhập địa chỉ',
-            'address.max'          => 'Địa chỉ không thể lớn hơn 250 ký tự.',
-            'note.max' => 'Nội dung không thể lớn hơn 300 ký tự.',
-                
-        ];
-
-        $cart_count = Cart::count();
-
-        if($cart_count==0){
-            return response()->json([
-                'status'=>3,
-                'error' => 'Chưa có sản phẩm trong giỏ hàng!'
-            ]);
-        }
-        
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'phone' => 'required| min:10|max:11',
-            'email' => 'required|email',
-            'address' => 'required|max:250',
-            'note'        => 'max:300',
-        ],$message);
-
-        if ($validator->passes()) {
-            $customer              = new Customer;
-            $customer->name        = $request->name;
-            $customer->email       = $request->email;
-            $customer->phone       = $request->phone;
-            $customer->address     = $request->address;
-            $customer->save();
-    
-            $order                  = new Order;
-            $order->id_customer     = $customer->id;
-            $order->total_price     = Cart::total();
-    
-            $order->type            = $request->type;
-
-            $order->status          = 1;
-    
-            $order->save();
-    
-            foreach (Cart::content() as $item) {
-                $orderDetail                   = new OrderDetail;
-                $orderDetail->id_order         = $order->id;
-                $orderDetail->id_product       = $item->id;
-                $orderDetail->qty              = $item->qty;
-                $orderDetail->price            = $item->price;
-                $orderDetail->total            = $item->price * $item->qty;
-                $orderDetail->save();
-            }
-    
-            $dataMail = [
-                'name'        => $request->name,
-                'email'       => $request->email,
-                'phone'       => $request->phone,
-                'address'     => $request->address,
-                'cart'        => Cart::content(),
-                'total'       => Cart::total(),
-            ];
-    
-            $email_admin = getOptions('general', 'email_admin');
-
-            Mail::send('frontend.mail.mail-order', $dataMail, function ($msg) use($email_admin) {
-                $msg->from(config('mail.mail_from'), 'Website - Dumin');
-                $msg->to(@$email_admin, 'Website - Dumin')->subject('Thông báo đơn hàng mới');
-            });
-    
-            Cart::destroy();
-    
-            $result['success'] = 'Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.';
-
-            $result['html_response'] = '<div class="contn"><div class="row"><div class="col-sm-12"><div class="alert alert-success" role="alert">Chưa có sản phẩm trong giỏ hàng.</div></div><div class="col-md-7 col-sm-7"><ul class="list-inline"><li class="list-inline-item"><div class="back-prd"><a title="Tiếp tục mua hàng" href="'.url('/').'"><i class="fa fa-angle-left"></i> Tiếp tục mua hàng</a></div></li></ul></div></div></div>';
-    
-            return json_encode($result);
-        }
-
-        return response()->json(['error'=>$validator->errors()]);
 
     }
 

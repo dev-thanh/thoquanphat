@@ -4,11 +4,10 @@
             <div class="top__group">
                 <div class="top__item">
                     <a href="tel:" class="top__text">
-                    <span class="icon"> <i class="fas fa-phone"></i> </span>( + 84 ) 987
-                    654 321
+                    <span class="icon"> <i class="fas fa-phone"></i> </span>{{@$site_info->hotline}}
                     </a>
                     <a href="mailto:wensite123@gmail.com" class="top__text">
-                    <span class="icon"> <i class="fal fa-envelope"></i> </span>wensite123@gmail.com
+                    <span class="icon"> <i class="fal fa-envelope"></i> </span>{{@$site_info->email}}
                     </a>
                 </div>
                 <form class="top__item form__search">

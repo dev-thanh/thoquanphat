@@ -50,49 +50,15 @@ Route::get('/tien-ich/{slug}', 'IndexController@utilitiesDetail')->name('home.ut
 
 Route::get('/lien-he', 'IndexController@getContact')->name('home.contact');
 
+Route::post('/lien-he/gui', 'IndexController@postContact')->name('home.post-contact');
+
 Route::get('dang-ky-tu-van', 'IndexController@signupConsultation')->name('home.signup-consultation');
 
 Route::post('/dang-ky-tu-va/gui', 'IndexController@postsignupConsultation')->name('home.post-signupconsultation');
 
-
-
-
-
-Route::get('/danh-muc-san-pham/{slug}', 'IndexController@getCatetoryProducts')->name('home.category-product');
-
-Route::get('/san-pham/{slug}', 'IndexController@getSingleProduct')->name('home.single-product');
-
-Route::get('/danh-muc-san-pham-gift/{slug}', 'IndexController@getCatetoryProductsGift')->name('home.category-product-gift');
-
-Route::get('/san-pham-gift/{slug}', 'IndexController@getSingleProductGift')->name('home.single-product-gift');
-
-Route::get('/san-pham', 'IndexController@getListProducts')->name('home.product');
-
-Route::get('/san-pham-gift', 'IndexController@getListProductsGift')->name('home.product-gift');
-
-Route::get('/sale', 'IndexController@getListProductsSale')->name('home.product-sale');
-
 Route::get('/blogs', 'IndexController@getListNews')->name('home.news');
 
 Route::get('/blogs/{slug}', 'IndexController@getSingleNews')->name('home.news-single');
-
-Route::get('story', 'IndexController@getStory')->name('home.story');
-
-Route::get('/faq', 'IndexController@getFaq')->name('home.faq');
-
-Route::get('/dai-ly', 'IndexController@getAgency')->name('home.agency');
-
-Route::post('add-cart', 'IndexController@postAddCart')->name('home.post-add-cart');
-
-Route::get('/get-add-cart', 'IndexController@getAddCart')->name('home.get-add-cart');
-
-Route::get('gio-hang', 'IndexController@getCart')->name('home.cart');
-
-Route::get('remove-cart', 'IndexController@getRemoveCart')->name('home.remove.cart');
-
-Route::get('update-cart', 'IndexController@getUpdateCart')->name('home.update.cart');
-
-Route::post('thanh-toan', 'IndexController@postCheckOut')->name('home.check-out.post');
 
 Route::get('/chinh-sach/{slug}', 'IndexController@policy')->name('home.policy');
 // Route::get('contact-registration', 'IndexController@postRegistrationEmail')->name('home.contact-registration');

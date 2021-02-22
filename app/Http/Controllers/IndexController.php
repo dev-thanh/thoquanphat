@@ -634,6 +634,11 @@ class IndexController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         })->orderBy('created_at', 'DESC')->paginate(6);
 
+        $utilities = Utilities::where('status',1)
+        ->where(function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        })->orderBy('created_at', 'DESC')->paginate(6);
+
         // dd($beautiful_house);
 
         // $products_hot = Products::where([
@@ -641,7 +646,7 @@ class IndexController extends Controller
         //     'hot' => 1
         // ])->orderBy('stt')->get()->take(5);
 
-        return view('frontend.pages.search', compact('dataSeo', 'services','projects','beautiful_house'));
+        return view('frontend.pages.search', compact('dataSeo', 'services','projects','beautiful_house','utilities'));
     }
 
     public function policy($slug){
